@@ -23,7 +23,7 @@ describe('Bookings', function() {
 
   })
 
-  it('should unbook a room for a given customer on a given date', () {
+  it('should unbook a room for a given customer on a given date', () => {
 
   })
 
