@@ -41,10 +41,20 @@ describe('Hotel', function() {
     expect(hotel.rooms[0]).to.eql(roomsData.rooms[0]);
   })
 
-  it('should calculate total revenue for a given day', () => {
+  it('should return the bookings for a given date', () => {
 
-    expect(hotel.returnDayRevenue()).to.equal(888);
-    //this should really invoke bookings.returnDayRevenue() and roomServices.returnDayRevenue()
+  })
+
+  it('should return the rooms booked for a given date', () => {
+
+  })
+
+  
+
+  it.only('should calculate booking revenue for a given day', () => {
+
+    expect(hotel.returnBookingRevenue("2019/09/22")).to.equal(7766.5);
+
   })
 
 })

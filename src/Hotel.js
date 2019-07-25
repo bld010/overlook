@@ -11,8 +11,42 @@ class Hotel {
     this.rooms = roomsData.rooms;
   }
 
+  returnTotalDayRevenue(date) {
+    
 
+    let todayRoomServicesRevenue = this.roomServices.filter(roomService => roomService.date === date)
+    
+  }
+
+ 
+
+  returnRoomServicesRevenue(date) {
+    
+  }
+
+  returnTodaysBookings(date) {
+    return this.bookings.filter(booking => booking.date === date)
+  }
+
+  returnTodaysBookedRooms(date) {
+    let todaysBookedRoomNumbers = this.returnTodaysBookings(date).map(booking => {
+      return booking.roomNumber
+    })
+    return roomsData.rooms.filter(room => {
+      return todaysBookedRoomNumbers.includes(room.number)
+    })
+  }
+
+  returnBookingRevenue(date) {
+    let todaysBookedRooms = this.returnTodaysBookedRooms(date);
+    return todaysBookedRooms.reduce((roomRevenue, room) => {
+      roomRevenue += room.costPerNight;
+      return roomRevenue
+    }, 0)
+  }
 
 }
+
+  
 
 export default Hotel;
