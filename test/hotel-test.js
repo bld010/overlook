@@ -41,8 +41,9 @@ describe('Hotel', function() {
     expect(hotel.rooms[0]).to.eql(roomsData.rooms[0]);
   })
 
-  it('should return the bookings for a given date', () => {
-
+  it.only('should return the bookings for a given date', () => {
+    expect(hotel.returnTodaysBookings("2019/09/22").length).to.equal(24)
+    expect(hotel.returnTodaysBookings("2019/09/22")[0].date).to.equal("2019/09/22")
   })
 
   it('should return the rooms booked for a given date', () => {
@@ -51,10 +52,8 @@ describe('Hotel', function() {
 
   
 
-  it.only('should calculate booking revenue for a given day', () => {
-
+  it('should calculate booking revenue for a given day', () => {
     expect(hotel.returnBookingRevenue("2019/09/22")).to.equal(7766.5);
-
   })
 
 })
