@@ -66,6 +66,11 @@ class Hotel {
       this.rooms.length * 100))
   }
 
+  filterAvailableRooms(date, roomType) {
+    let availableRooms = this.returnTodaysUnbookedRooms(date);
+    return availableRooms.filter(room => room.roomType === roomType)
+  }
+
 }
 
   

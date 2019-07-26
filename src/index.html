@@ -1,13 +1,97 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>Webpack Starter Kit</title>
+    <title>Overlook</title>
   </head>
   <body>
-    <h1>Webpack Starter Kit</h1>
+    <header>
+      <h1>Overlook</h1>
+      <h3>Showing Details for: <span>All Customers</span></h3>
+      <form>
+        <label for="section__customers--search">Customer Search</label>
+        <input placeholder="Customer Name" id="section__customers--search">
+        <button>Search</button>
+      </form>
+    </header>
+      <nav>
+        <ul>
+          <li class="nav__main">Main</li>
+          <li class="nav__rooms disabled">Rooms</li>
+          <li class="nav__customers">Customers</li>
+          <li class="nav__orders disabled">Orders</li>
+          <!-- <li>Housekeeping</li>
+          <li>Maintenance</li> -->
+        </ul>
+      </nav>
 
-    <img src="/images/turing-logo.png" alt="turing logo" height="100px" width="100px">
+  
+    
 
-    <!-- Do not include the index.js or main.bundle.js file here - it is done automatically by the webpack server -->
+    <section class="section__main">
+      <article class="section__main--general">
+        <h2>Today's Date: <span></span></h2>
+        <h3>Occupancy: <span></span></h3>
+        <h3>Available Rooms: <span></span></h3>
+        <ul>
+          <li>Single Rooms: <span></span></li>
+          <li>Residential Suites: <span></span></li>
+          <li>Junior Suites: <span></span></li>
+          <li>Suites: <span></span></li>
+        </ul>
+        <h3>Today's Revenue: <span></span></h3>
+        <ul>
+          <li>Room Service Revenue: <span></span></li>
+          <li>Bookings Revenue: <span></span></li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="section__rooms hidden">
+      <article class="section__rooms--general">
+        <h3>Most Popular Booking Date: <span></span></h3>
+        <h3>Most Rooms Available On: <span></span></h3>
+      </article>
+    </section>
+
+   
+
+    <section class="section__customers hidden">
+      <article class="section__customers--general">
+        <h3>Search for a Customer</h3>
+          <form>
+            <label for="section__customers--search">Enter Customer Name</label>
+            <input placeholder="Customer Name" id="section__customers--search">
+            <button>Search</button>
+          </form>
+        <h3>Add a New Customer</h3>
+      </article>
+    </section>
+
+    <section class="section__orders hidden">
+        <article class="section__orders--general">
+          <h3>Today's Room Service Orders: </h3>
+          
+          <table> 
+            <tr>
+              <th>Room Number</th>
+              <th>Item</th>
+              <th>Total Charge</th>
+            </tr>
+            <tr>
+              <td>Room</td>
+              <td>Item</td>
+              <td>$2.99</td>
+            </tr>
+          </table>
+
+          <form>
+            <label for="section__orders--date-search">Search for Orders By Date:</label>
+            <input placeholder="Enter a Date YYYY/MM/DD" id="section__orders--date-search">
+            <button>Search</button>
+          </form>
+        </article>
+    </section>
+
+
   </body>
 </html>

@@ -8,7 +8,7 @@ chai.use(spies);
 describe('Bookings', function() {
 
   it('should be an instance of the Bookings class', () => {
-
+    
   })
 
   it('should return the booking information for a customer for a given date', () => {
