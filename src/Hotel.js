@@ -11,17 +11,23 @@ class Hotel {
     this.rooms = roomsData.rooms;
   }
 
-  returnTotalDayRevenue(date) {
-    
-
-    let todayRoomServicesRevenue = this.roomServices.filter(roomService => roomService.date === date)
-    
+  returnTodaysTotalRevenue(date) {
+    let todaysRoomServicesRevenue = this.returnTodaysRoomServicesRevenue(date)
+    let todaysBookingRevenue = this.returnTodaysBookingRevenue(date)
+    return todaysRoomServicesRevenue + todaysBookingRevenue;
   }
 
- 
+  returnTodaysRoomServicesCharges(date) {
+    return this.roomServices.filter(roomService => roomService.date === date)
+  }
 
-  returnRoomServicesRevenue(date) {
-    
+  returnTodaysRoomServicesRevenue(date) {
+    let todaysRoomServiceCharges = this.returnTodaysRoomServicesCharges(date) 
+    let rawRevenue = todaysRoomServiceCharges.reduce((totalRevenue, roomServiceCharge) => {
+      totalRevenue += roomServiceCharge.totalCost
+      return totalRevenue
+    }, 0)
+    return parseFloat(rawRevenue.toFixed(2))
   }
 
   returnTodaysBookings(date) {
@@ -29,20 +35,35 @@ class Hotel {
   }
 
   returnTodaysBookedRooms(date) {
-    let todaysBookedRoomNumbers = this.returnTodaysBookings(date).map(booking => {
-      return booking.roomNumber
-    })
+    let todaysBookedRoomNumbers = this.returnTodaysBookedRoomNumbers(date)
     return roomsData.rooms.filter(room => {
       return todaysBookedRoomNumbers.includes(room.number)
     })
   }
 
-  returnBookingRevenue(date) {
+  returnTodaysBookedRoomNumbers(date) {
+    return this.returnTodaysBookings(date).map(booking => {
+      return booking.roomNumber
+    })
+  }
+
+  returnTodaysBookingRevenue(date) {
     let todaysBookedRooms = this.returnTodaysBookedRooms(date);
     return todaysBookedRooms.reduce((roomRevenue, room) => {
       roomRevenue += room.costPerNight;
       return roomRevenue
     }, 0)
+  }
+
+  returnTodaysUnbookedRooms(date) {
+    return this.rooms.filter(room => {
+      return !this.returnTodaysBookedRoomNumbers(date).includes(room.number)
+    })
+  }
+
+  returnTodaysOccupancyPercentage(date) {
+    return parseInt((this.returnTodaysBookedRooms(date).length / 
+      this.rooms.length * 100))
   }
 
 }

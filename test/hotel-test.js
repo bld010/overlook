@@ -41,19 +41,38 @@ describe('Hotel', function() {
     expect(hotel.rooms[0]).to.eql(roomsData.rooms[0]);
   })
 
-  it.only('should return the bookings for a given date', () => {
-    expect(hotel.returnTodaysBookings("2019/09/22").length).to.equal(24)
-    expect(hotel.returnTodaysBookings("2019/09/22")[0].date).to.equal("2019/09/22")
+  it('should return the bookings for a given date', () => {
+    expect(hotel.returnTodaysBookings("2019/09/22").length).to.equal(24);
+    expect(hotel.returnTodaysBookings("2019/09/22")[0].date).to.equal("2019/09/22");
   })
 
   it('should return the rooms booked for a given date', () => {
-
+    expect(hotel.returnTodaysBookedRooms("2019/09/22").length).to.equal(24);
+    expect(hotel.returnTodaysBookedRooms("2019/09/22")[0]).to.equal(roomsData.rooms[0]);
   })
 
-  
-
   it('should calculate booking revenue for a given day', () => {
-    expect(hotel.returnBookingRevenue("2019/09/22")).to.equal(7766.5);
+    expect(hotel.returnTodaysBookingRevenue("2019/09/22")).to.equal(7766.5);
+  })
+
+  it('should return unbooked rooms for a given date', () => {
+    expect(hotel.returnTodaysUnbookedRooms("2019/09/22").length).to.equal(26);
+  })
+
+  it('should return the occupancy percentage for a given day', () => {
+    expect(hotel.returnTodaysOccupancyPercentage("2019/09/22")).to.equal(48)
+  })
+
+  it('should return all room service charges for a given day', () => {
+    expect(hotel.returnTodaysRoomServicesCharges("2019/10/28").length).to.equal(2)
+  })
+
+  it('should calculate all room service revenue for a given day', () => {
+    expect(hotel.returnTodaysRoomServicesRevenue("2019/10/28")).to.equal(30.05)
+  })
+
+  it('should calculate total revenue for a given day', () => {
+    expect(hotel.returnTodaysTotalRevenue("2019/10/28")).to.equal(8036.92)
   })
 
 })

@@ -7,4 +7,3 @@ import spies from 'chai-spies';
 const expect = chai.expect;
 chai.use(spies);
 
-//need rooms and booking data to calculate day's revenue
