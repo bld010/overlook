@@ -5,8 +5,9 @@ import Customer from "./Customer.js"
 let domUpdates = {
 
   createNewCustomer(hotel, newCustomerObject) {
-    hotel.users.push(new Customer(newCustomerObject));
-    hotel.customerSelected = true
+    let newCustomer = new Customer(newCustomerObject)
+    hotel.users.push(newCustomer);
+    hotel.customerSelected = newCustomer;
   },
 
 }

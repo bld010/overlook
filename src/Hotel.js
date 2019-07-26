@@ -10,7 +10,7 @@ class Hotel {
     this.bookings = bookingsData.bookings;
     this.roomServices = roomServicesData.roomServices;
     this.rooms = roomsData.rooms;
-    this.customerSelected = false;
+    this.customerSelected = null;
     console.log(this)
   }
 

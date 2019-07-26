@@ -11,13 +11,13 @@ describe('Bookings', function() {
     
   })
 
-  it('should return the booking information for a customer for a given date', () => {
+  // it('should return the booking information for a customer for a given date', () => {
 
-  })
+  // })
 
-  it('should return all bookings for a given customer', () => {
+  // it('should return all bookings for a given customer', () => {
 
-  })
+  // })
 
   it('should book a room for a given customer on a given date', () => {
 
@@ -27,32 +27,11 @@ describe('Bookings', function() {
 
   })
 
-  it('should upgrade a room for a given customer on a given date', () => {
-    
-  })
+  //upgrade a room --> change room number
 
-  it('should return a customer\'s charge for their room for a given date', () => {
+  // it('should return a customer\'s charge for their room for a given date', () => {
 
-  })
+  // })
 
-  it('should return available rooms on a given day', () => {
-
-  })
-
-  it('should return the date with highest occupancy percentage for all time', () => {
-
-  })
-
-  it('should return the date with lowest occupancy percentage', () => {
-
-  })
-
-  it('should filter available rooms for a given day', () => {
-
-  })
-
-  it('should be able to filter available rooms by room type', () => {
-
-  })
 
 })

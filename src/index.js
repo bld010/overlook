@@ -1,4 +1,6 @@
 import $ from 'jquery';
+window.$ = window.jQuery = $;
+import 'jquery-ui/ui/widgets/autocomplete';
 import './css/base.scss';
 import Hotel from './Hotel.js';
 import bookingsData from '../data/bookings-data.js';
@@ -10,7 +12,7 @@ import domUpdates from './domUpdates.js';
 // import './images/turing-logo.png'
 
 let hotel = new Hotel()
-let todaysDate = "2019/09/22"
+let todaysDate = "2019/09/22";
 
 let $todaysDateDisplay = $('.section__main--general h2 span')
 let $occupancyPercentage = $('.section__main--general h3 span').eq(0);
@@ -27,6 +29,51 @@ let $navRoomsTab = $('.nav__rooms');
 let $navCustomersTab = $('.nav__customers');
 let $navMainTab = $('.nav__main');
 let $navOrdersTab = $('.nav__orders');
+
+$( "#section__customers--search" ).autocomplete({
+  source: hotel.users.map(user => user.name)
+});
+
+$('.ui-autocomplete-input').focus(function() {
+  $('.ui-autocomplete-input').val('');
+  $('.section__customers--search--error').addClass('hidden')
+})
+
+$('.ui-autocomplete-input~button').click(function(e) {
+  e.preventDefault();
+  handleCustomerSearch();
+})
+
+function handleCustomerSearch() {
+  let searchInput = $('.ui-autocomplete-input').val();
+  $('.ui-autocomplete-input').val('');
+  let foundUser = hotel.users.find(user => user.name === searchInput);
+  if (!foundUser) {
+    $('.section__customers--search--error').removeClass('hidden')
+  } else {
+    hotel.customerSelected = foundUser;
+    populateAllCustomerInfo(foundUser)
+  }
+}
+
+function updateShowingDetailsSpan (user) {
+  $('header h3 span:nth-of-type(1)').text(user.name)
+}
+
+function populateAllCustomerInfo(user) {
+  $('header h3 span:nth-of-type(2)').removeClass('hidden')
+  updateShowingDetailsSpan(user)
+}
+
+function populateGeneralizedInfo() {
+  $('header h3 span:nth-of-type(2)').addClass('hidden');
+  $('header h3 span:nth-of-type(1)').text('All Customers');
+  $('.ui-autocomplete-input').val('');
+}
+
+$('header h3 span:nth-of-type(2)').click(function() {
+  populateGeneralizedInfo();
+})
 
 let $roomsSection = $('.section__rooms');
 let $mainSection = $('.section__main');
@@ -70,7 +117,7 @@ function unhideSelectedSection(selectedSection) {
 function hideSections (selectedSection) {
   sections.forEach(section => {
     if (!section.hasClass('selected')) {
-      section.addClass('hidden').removeClass('selected')
+      section.addClass('hidden')
     }
   })
 }
@@ -88,11 +135,10 @@ $juniorSuitesAvailable.text(hotel.filterAvailableRooms(todaysDate, 'junior suite
 $suitesAvailable.text(hotel.filterAvailableRooms(todaysDate, 'suite').length);
 
 
-
-
-$('.section__customers--new-customer').click(function(e) {
+$('.section__customers--new-customer button').click(function(e) {
   e.preventDefault();
-  let $newCustomerName = $('#new-customer-name-input').val()
-  domUpdates.createNewCustomer(hotel, {id: hotel.users.length + 1, name: `${$newCustomerName}`})
-  console.log(hotel.users)
+  let newCustomerName = $('#new-customer-name-input').val();
+  domUpdates.createNewCustomer(hotel, {id: hotel.users.length + 1, name: `${newCustomerName}`})
+  $('#new-customer-name-input').val('');
+  populateAllCustomerInfo(hotel.customerSelected);
 })

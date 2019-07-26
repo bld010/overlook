@@ -6,11 +6,15 @@
   <body>
     <header>
       <h1>Overlook</h1>
-      <h3>Showing Details for: <span>All Customers</span></h3>
+      <h3>Showing Details for: <span>All Customers</span><span class="hidden">[Clear User]</span></h3>
       <form>
         <label for="section__customers--search">Customer Search</label>
         <input placeholder="Customer Name" id="section__customers--search">
         <button>Search</button>
+        <div class="section__customers--search--error hidden">
+          <p>No results. Try again or add new customers on Customer Tab</p>
+          
+        </div>
       </form>
     </header>
       <nav>
@@ -57,14 +61,13 @@
 
     <section class="section__customers hidden">
       <article class="section__customers--general">
-        <h3>Search for a Customer</h3>
-          <form>
-            <label for="section__customers--search">Enter Customer Name</label>
-            <input placeholder="Customer Name" id="section__customers--search">
-            <button>Search</button>
-          </form>
-        <h3>Add a New Customer</h3>
+        <h3>No Customer Selected</h3>
+        <h4>Search for one in the top right corner or add one below.</h4>
+        
+      
+        
           <form class="section__customers--new-customer">
+            <h3>Add a New Customer</h3>
             <label for="new-customer-name-input">Enter New Customer's Name</label>
             <input id="new-customer-name-input">
             <button>Add New Customer</button>
