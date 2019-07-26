@@ -5,6 +5,7 @@ import bookingsData from '../data/bookings-data.js';
 import roomsData from '../data/rooms-data.js';
 import usersData from '../data/users-data.js';
 import roomServicesData from '../data/roomServices-data.js'
+import domUpdates from './domUpdates.js';
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 // import './images/turing-logo.png'
 
@@ -62,15 +63,14 @@ function removeSelectedClass() {
 }
 
 function unhideSelectedSection(selectedSection) {
-    selectedSection.addClass('selected').removeClass('hidden')
-    hideSections(selectedSection)
+  selectedSection.addClass('selected').removeClass('hidden')
+  hideSections(selectedSection)
 }
 
 function hideSections (selectedSection) {
   sections.forEach(section => {
     if (!section.hasClass('selected')) {
       section.addClass('hidden').removeClass('selected')
-      console.log(section)
     }
   })
 }
@@ -89,4 +89,10 @@ $suitesAvailable.text(hotel.filterAvailableRooms(todaysDate, 'suite').length);
 
 
 
-console.log(hotel.filterAvailableRooms(todaysDate, 'single room').length)
+
+$('.section__customers--new-customer').click(function(e) {
+  e.preventDefault();
+  let $newCustomerName = $('#new-customer-name-input').val()
+  domUpdates.createNewCustomer(hotel, {id: hotel.users.length + 1, name: `${$newCustomerName}`})
+  console.log(hotel.users)
+})

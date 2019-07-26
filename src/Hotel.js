@@ -1,14 +1,17 @@
 import bookingsData from '../data/bookings-data.js';
 import roomsData from '../data/rooms-data.js';
 import usersData from '../data/users-data.js';
-import roomServicesData from '../data/roomServices-data.js'
+import roomServicesData from '../data/roomServices-data.js';
+import Customer from './Customer.js'
 
 class Hotel {
   constructor() {
-    this.users = usersData.users;
+    this.users = usersData.users.map(user => new Customer(user));
     this.bookings = bookingsData.bookings;
     this.roomServices = roomServicesData.roomServices;
     this.rooms = roomsData.rooms;
+    this.customerSelected = false;
+    console.log(this)
   }
 
   returnTodaysTotalRevenue(date) {

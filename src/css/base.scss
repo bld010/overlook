@@ -1,6 +1,6 @@
 $primary-background: #ffffff;
 $main-color: #77a6f7;
-$rooms-color: #ffccbc;
+$rooms-color: #ffa58a;
 $orders-color: #8dcef7;
 $customers-color: #00887A;
 $display-font: sans-serif;
@@ -8,7 +8,7 @@ $display-font: sans-serif;
 body {
   background-color: $primary-background;
   font-family: $display-font;
-  width: 80%;
+  width: 90%;
   margin: auto;
 }
 
@@ -61,7 +61,7 @@ nav {
       text-align: center;
       width: 6em;
       border: solid;
-      border-width: 0px 0px 20px 0px;
+      border-width: 0px 0px 10px 0px;
       margin: 0 0 0 0;
       font-size: 20px;
       font-weight: bold;
@@ -90,7 +90,8 @@ nav {
 }
 
 @mixin section-styles($color) {
-  border: 20px solid $color;
+  border: solid $color;
+  border-width: 15px 15px 15px 15px;
   padding: 20px;
   min-height: 70vh;
 }
