@@ -1,6 +1,7 @@
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 import 'jquery-ui/ui/widgets/autocomplete';
+import 'jquery-ui/ui/widgets/datepicker';
 import './css/base.scss';
 import Hotel from './Hotel.js';
 import bookingsData from '../data/bookings-data.js';
@@ -8,8 +9,7 @@ import roomsData from '../data/rooms-data.js';
 import usersData from '../data/users-data.js';
 import roomServicesData from '../data/roomServices-data.js'
 import domUpdates from './domUpdates.js';
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
-// import './images/turing-logo.png'
+
 
 let hotel = new Hotel()
 
@@ -46,7 +46,7 @@ $leastPopularBookingTotalSpan.text(hotel.returnLeastPopularBookingDate().booking
 
 // search
 
-$( "#section__customers--search" ).autocomplete({
+$( '#section__customers--search').autocomplete({
   source: hotel.users.map(user => user.name)
 });
 
@@ -59,6 +59,26 @@ $('.ui-autocomplete-input~button').click(function(e) {
   e.preventDefault();
   handleCustomerSearch();
 })
+
+// orders datepicker
+
+let $datePickerButton = $('#datepicker~button')
+
+$(function () {
+  $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
+});
+
+$datePickerButton.click(function(e) {
+  e.preventDefault();
+  console.log($('#datepicker').val().split('-').join('/'))
+})
+
+$('#datepicker').datepicker({
+  dateFormat: 'yy-mm-dd'
+});
+
+
+
 
 function handleCustomerSearch() {
   let searchInput = $('.ui-autocomplete-input').val();
@@ -160,5 +180,3 @@ $('.section__customers--new-customer button').click(function(e) {
   populateAllCustomerInfo(hotel.customerSelected);
   $('.section__customers--search--error').addClass('hidden')
 })
-
-console.log(hotel.returnMostPopularBookingDate())
