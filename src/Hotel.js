@@ -26,11 +26,16 @@ class Hotel {
 
   returnTodaysRoomServicesRevenue(date) {
     let todaysRoomServiceCharges = this.returnTodaysRoomServicesCharges(date) 
-    let rawRevenue = todaysRoomServiceCharges.reduce((totalRevenue, roomServiceCharge) => {
-      totalRevenue += roomServiceCharge.totalCost
-      return totalRevenue
-    }, 0)
-    return parseFloat(rawRevenue.toFixed(2))
+    if (todaysRoomServiceCharges.length) {
+      let rawRevenue = todaysRoomServiceCharges.reduce((totalRevenue, roomServiceCharge) => {
+        totalRevenue += roomServiceCharge.totalCost
+        return totalRevenue
+      }, 0)
+      return parseFloat(rawRevenue.toFixed(2))
+    } else {
+      return 0
+    }
+    
   }
 
   returnTodaysBookings(date) {
