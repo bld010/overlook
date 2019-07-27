@@ -123,9 +123,11 @@ nav {
 @mixin section-styles($color) {
   border: solid $color;
   border-width: 15px 15px 15px 15px;
-  padding: 20px;
+  padding: 30px;
   min-height: 70vh;
   border-radius: 8px;
+  display: flex;
+  flex-direction: row;
 }
 
 .section__main {
@@ -178,3 +180,93 @@ form.section__customers--new-customer {
 .ui-helper-hidden-accessible>div {
   display: none;
 }
+
+
+
+.section__orders--general--table {
+  & table {
+    border-collapse: collapse;
+    border: solid black;
+    border-width: 0 0 1px 0;
+    margin: 10px auto 10px auto;
+    width: 98%;
+  }
+    & th, td {
+      border: 1px solid black;
+      padding: 5px;
+    } 
+    
+    & thead {
+      background: black;
+      color: white;
+      font-weight: bold;
+      text-transform: lowercase;
+    }
+  & p {
+    text-align: center;
+    margin: 20px;
+  }
+}
+
+@mixin widget-styles($color) {
+  margin:0px 30px 30px 0px;
+  border: 2px solid $color;
+  width: 300px;
+  min-height: 320px;
+  border-radius: 8px;
+  align-self: flex-start; 
+}
+
+@mixin widget-heading($color) {
+  margin: auto;
+  background: $color;
+  font-size: 20px;
+  height: 40px;
+  text-align: center;
+  padding-top: 14px;
+  text-transform: lowercase;
+  font-weight: 300;
+}
+
+.section__orders--general {
+  @include widget-styles($orders-color);
+  
+  & h3 {
+    @include widget-heading($orders-color)
+  }
+}
+
+
+
+.section__orders form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include widget-styles($orders-color);
+
+    & label {
+      @include widget-heading($orders-color);
+      width: 100%;
+      margin: 0px auto 20px auto;
+    }
+    
+    & button {
+      height: 40px;
+      margin: 10px auto 3px auto;
+      padding: 0;
+      border: 2px solid $orders-color;
+      width: 70%;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      background: $orders-color;
+      text-transform: lowercase;
+      font-size: 20px;
+      font-weight: 300;
+    }
+
+    & button:hover {
+      cursor: pointer;
+    }
+}
+

@@ -13,6 +13,8 @@ import domUpdates from './domUpdates.js';
 
 let hotel = new Hotel()
 
+// Query Selectors
+
 let $todaysDateDisplay = $('.section__main--general h2 span')
 let $occupancyPercentage = $('.section__main--general h3 span').eq(0);
 let $availableRooms = $('.section__main--general h3 span').eq(1);
@@ -42,7 +44,7 @@ $mostPopularBookingDateSpan.text(hotel.returnMostPopularBookingDate().date)
 $mostPopularBookingTotalSpan.text(hotel.returnMostPopularBookingDate().bookings)
 $leastPopularBookingDateSpan.text(hotel.returnLeastPopularBookingDate().date)
 $leastPopularBookingTotalSpan.text(hotel.returnLeastPopularBookingDate().bookings)
-
+populateOrdersTableElements();
 
 // search
 
@@ -71,25 +73,42 @@ $(function () {
 $datePickerButton.click(function(e) {
   e.preventDefault();
   hotel.currentDate = $('#datepicker').val().split('-').join('/');
-  let charges = (hotel.returnTodaysRoomServicesCharges(hotel.currentDate));
-  let revenue = hotel.returnTodaysRoomServicesRevenue(hotel.currentDate);
-  let chargesTableElements = null;
-  if (!charges.length) {
-    chargesTableElements = `<td colspan=3>No Room Service Orders</td>`
-  } else {
-    chargesTableElements = charges.reduce((acc, charge) => {
-    acc += `<td>${hotel.bookings.find(booking => booking.userID === charge.userID).roomNumber} </td><td>
-      ${charge.food}</td><td>${charge.totalCost}</td></tr><tr>`
-    return acc
-    },'')
-    chargesTableElements += `<td colspan=2>Total:</td><td>${revenue}</td>` 
-  }
-  console.log(chargesTableElements)
-  console.log($('.section__orders--general table tr').eq(1))
-  $('.section__orders--general table tr').eq(1).html(chargesTableElements)
+  populateOrdersTableElements();
 })
 
-
+function populateOrdersTableElements() {
+  let charges = (hotel.returnTodaysRoomServicesCharges(hotel.currentDate));
+  let revenue = hotel.returnTodaysRoomServicesRevenue(hotel.currentDate);
+  let chargesTableElements = `<table>
+    <thead>
+      <tr>
+        <th>Room</th>
+        <th>Food</th>
+        <th>Cost</th>
+      </tr>
+    </thead>
+    <tbody>`;
+  if (!charges.length) {
+    chargesTableElements = `<p>No room service orders found for this date.</p>`;
+  } else {
+    chargesTableElements += charges.reduce((acc, charge) => {
+    acc += `
+        <td>${hotel.bookings.find(booking => booking.userID === charge.userID).roomNumber} </td>
+        <td>${charge.food}</td>
+        <td>${charge.totalCost}</td>
+      </tr>
+      <tr>`
+    return acc
+    },'')
+    chargesTableElements += `
+          <td colspan=2>Total:</td>
+          <td>${revenue}</td>
+        </tr>
+      </tbody>
+      </table>` 
+  }
+  $('.section__orders--general--table').html(chargesTableElements)
+}
 
 $('#datepicker').datepicker({
   dateFormat: 'yy-mm-dd'
