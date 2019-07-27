@@ -70,8 +70,26 @@ $(function () {
 
 $datePickerButton.click(function(e) {
   e.preventDefault();
-  console.log($('#datepicker').val().split('-').join('/'))
+  hotel.currentDate = $('#datepicker').val().split('-').join('/');
+  let charges = (hotel.returnTodaysRoomServicesCharges(hotel.currentDate));
+  let revenue = hotel.returnTodaysRoomServicesRevenue(hotel.currentDate);
+  let chargesTableElements = null;
+  if (!charges.length) {
+    chargesTableElements = `<td colspan=3>No Room Service Orders</td>`
+  } else {
+    chargesTableElements = charges.reduce((acc, charge) => {
+    acc += `<td>${hotel.bookings.find(booking => booking.userID === charge.userID).roomNumber} </td><td>
+      ${charge.food}</td><td>${charge.totalCost}</td></tr><tr>`
+    return acc
+    },'')
+    chargesTableElements += `<td colspan=2>Total:</td><td>${revenue}</td>` 
+  }
+  console.log(chargesTableElements)
+  console.log($('.section__orders--general table tr').eq(1))
+  $('.section__orders--general table tr').eq(1).html(chargesTableElements)
 })
+
+
 
 $('#datepicker').datepicker({
   dateFormat: 'yy-mm-dd'
