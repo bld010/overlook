@@ -2,6 +2,7 @@
 <html lang="en-US">
   <head>
     <title>Overlook</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400&display=swap" rel="stylesheet">
   </head>
   <body>
     <header>
@@ -52,20 +53,16 @@
 
     <section class="section__rooms hidden">
       <article class="section__rooms--general">
-        <h3>Most Popular Booking Date: <span></span></h3>
-        <h3>Most Rooms Available On: <span></span></h3>
+        <h3>Most Popular Booking Date: <span>[Date]</span> (<span>0</span> bookings)</h3>
+        <h3>Most Rooms Available On: <span>[Date]</span> (<span>0</span> bookings)</h3>
       </article>
     </section>
 
-   
 
     <section class="section__customers hidden">
       <article class="section__customers--general">
         <h3>No Customer Selected</h3>
         <h4>Search for one in the top right corner or add one below.</h4>
-        
-      
-        
           <form class="section__customers--new-customer">
             <h3>Add a New Customer</h3>
             <label for="new-customer-name-input">Enter New Customer's Name</label>
@@ -78,7 +75,7 @@
     <section class="section__orders hidden">
         <article class="section__orders--general">
           <h3>Today's Room Service Orders: </h3>
-          <form id="datepicker"
+          <form id="datepicker"></form>
           <table> 
             <tr>
               <th>Room Number</th>

@@ -11,7 +11,7 @@ class Hotel {
     this.roomServices = roomServicesData.roomServices;
     this.rooms = roomsData.rooms;
     this.customerSelected = null;
-    console.log(this)
+    this.currentDate = "2019/09/22";
   }
 
   returnTodaysTotalRevenue(date) {
@@ -49,6 +49,33 @@ class Hotel {
       return booking.roomNumber
     })
   }
+
+  returnMostPopularBookingDate() {
+    let dates = [...new Set(this.bookings.map(booking => booking.date))]
+    let mostPopularDate = null;
+    let highestNumberOfBookings = dates.reduce((acc, date) => {
+      if (this.returnTodaysBookedRoomNumbers(date).length > acc) {
+        mostPopularDate = date;
+        acc = this.returnTodaysBookedRoomNumbers(date).length;
+      }
+      return acc
+    }, 0)
+    return {date: `${mostPopularDate}`, bookings: `${highestNumberOfBookings}`};
+  }
+
+  returnLeastPopularBookingDate() {
+    let dates = [...new Set(this.bookings.map(booking => booking.date))]
+    let leastPopularDate = null;
+    let leastNumberOfBookings = dates.reduce((acc, date) => {
+      if (this.returnTodaysBookedRoomNumbers(date).length < acc) {
+        leastPopularDate = date;
+        acc = this.returnTodaysBookedRoomNumbers(date).length;
+      }
+      return acc
+    }, 51)
+    return {date: `${leastPopularDate}`, bookings: `${leastNumberOfBookings}`};
+  }
+  
 
   returnTodaysBookingRevenue(date) {
     let todaysBookedRooms = this.returnTodaysBookedRooms(date);

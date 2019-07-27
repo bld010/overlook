@@ -12,7 +12,6 @@ import domUpdates from './domUpdates.js';
 // import './images/turing-logo.png'
 
 let hotel = new Hotel()
-let todaysDate = "2019/09/22";
 
 let $todaysDateDisplay = $('.section__main--general h2 span')
 let $occupancyPercentage = $('.section__main--general h3 span').eq(0);
@@ -25,10 +24,27 @@ let $suitesAvailable = $('.section__main--general ul li span').eq(3);
 let $todaysRoomServicesRevenue = $('.section__main--general ul li span').eq(4);
 let $todaysBookingsRevenue = $('.section__main--general ul li span').eq(5);
 
+let $mostPopularBookingDateSpan = $('.section__rooms--general h3 span').eq(0);
+let $mostPopularBookingTotalSpan = $('.section__rooms--general h3 span').eq(1);
+let $leastPopularBookingDateSpan = $('.section__rooms--general h3:nth-child(2) span').eq(0);
+let $leastPopularBookingTotalSpan = $('.section__rooms--general h3:nth-child(2) span').eq(1);
+
 let $navRoomsTab = $('.nav__rooms');
 let $navCustomersTab = $('.nav__customers');
 let $navMainTab = $('.nav__main');
 let $navOrdersTab = $('.nav__orders');
+
+let $datepicker = ('#datepicker')
+
+//pageLoad elements
+
+$mostPopularBookingDateSpan.text(hotel.returnMostPopularBookingDate().date)
+$mostPopularBookingTotalSpan.text(hotel.returnMostPopularBookingDate().bookings)
+$leastPopularBookingDateSpan.text(hotel.returnLeastPopularBookingDate().date)
+$leastPopularBookingTotalSpan.text(hotel.returnLeastPopularBookingDate().bookings)
+
+
+// search
 
 $( "#section__customers--search" ).autocomplete({
   source: hotel.users.map(user => user.name)
@@ -69,6 +85,7 @@ function populateGeneralizedInfo() {
   $('header h3 span:nth-of-type(2)').addClass('hidden');
   $('header h3 span:nth-of-type(1)').text('All Customers');
   $('.ui-autocomplete-input').val('');
+  hotel.customerSelected = null;
 }
 
 $('header h3 span:nth-of-type(2)').click(function() {
@@ -123,16 +140,16 @@ function hideSections (selectedSection) {
 }
 
 
-$todaysDateDisplay.text(todaysDate)
-$occupancyPercentage.text(hotel.returnTodaysOccupancyPercentage(todaysDate) + '%');
-$availableRooms.text(hotel.returnTodaysUnbookedRooms(todaysDate).length);
-$todaysRevenue.text('$ ' + hotel.returnTodaysTotalRevenue(todaysDate).toFixed(2));
-$todaysRoomServicesRevenue.text('$ ' + hotel.returnTodaysRoomServicesRevenue(todaysDate));
-$todaysBookingsRevenue.text('$ ' + hotel.returnTodaysBookingRevenue(todaysDate));
-$singleRoomsAvailable.text(hotel.filterAvailableRooms(todaysDate, 'single room').length);
-$residentialSuitesAvailable.text(hotel.filterAvailableRooms(todaysDate, 'residential suite').length);
-$juniorSuitesAvailable.text(hotel.filterAvailableRooms(todaysDate, 'junior suite').length);
-$suitesAvailable.text(hotel.filterAvailableRooms(todaysDate, 'suite').length);
+$todaysDateDisplay.text(hotel.currentDate)
+$occupancyPercentage.text(hotel.returnTodaysOccupancyPercentage(hotel.currentDate) + '%');
+$availableRooms.text(hotel.returnTodaysUnbookedRooms(hotel.currentDate).length);
+$todaysRevenue.text('$ ' + hotel.returnTodaysTotalRevenue(hotel.currentDate).toFixed(2));
+$todaysRoomServicesRevenue.text('$ ' + hotel.returnTodaysRoomServicesRevenue(hotel.currentDate));
+$todaysBookingsRevenue.text('$ ' + hotel.returnTodaysBookingRevenue(hotel.currentDate));
+$singleRoomsAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'single room').length);
+$residentialSuitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'residential suite').length);
+$juniorSuitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'junior suite').length);
+$suitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'suite').length);
 
 
 $('.section__customers--new-customer button').click(function(e) {
@@ -141,4 +158,7 @@ $('.section__customers--new-customer button').click(function(e) {
   domUpdates.createNewCustomer(hotel, {id: hotel.users.length + 1, name: `${newCustomerName}`})
   $('#new-customer-name-input').val('');
   populateAllCustomerInfo(hotel.customerSelected);
+  $('.section__customers--search--error').addClass('hidden')
 })
+
+console.log(hotel.returnMostPopularBookingDate())

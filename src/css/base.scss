@@ -3,22 +3,24 @@ $main-color: #77a6f7;
 $rooms-color: #ffa58a;
 $orders-color: #8dcef7;
 $customers-color: #00887A;
-$display-font: sans-serif;
+$display-font: 'Roboto', sans-serif;
 
 body {
   background-color: $primary-background;
   font-family: $display-font;
+  font-weight: 400;
   width: 90%;
   margin: auto;
 }
 
 h1 {
   font-size: 60px;
-  font-weight: lighter;
+  font-weight: 100;
   display: inline-block;
   margin: 5px 0px 10px 60px;
   text-transform: lowercase;
   position: relative;
+  font-family: $display-font;
 }
 
 header {
@@ -29,12 +31,12 @@ header {
 
   & h3 {
     margin: 27px auto 0 auto;
-    font-weight: lighter;
+    font-weight: 100;
     display: inline-block;
   }
 
   & span:nth-of-type(1) {
-    font-weight: bold;
+    font-weight: 400;
     text-transform: capitalize;
   }
 
@@ -87,7 +89,7 @@ nav {
       border-width: 0px 0px 10px 0px;
       margin: 0 0 0 0;
       font-size: 20px;
-      font-weight: bold;
+      font-weight: 300;
       text-transform: lowercase;
     }
 
