@@ -14,6 +14,22 @@ import domUpdates from './domUpdates.js';
 
 let hotel = new Hotel()
 
+
+function formatDate() {
+  var date = new Date(),
+      month = '' + (date.getMonth() + 1),
+      day = '' + date.getDate(),
+      year = date.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  hotel.currentDate = [year, month, day].join('/');
+}
+
+formatDate();
+
+
 // Query Selectors
 
 let $todaysDateDisplay = $('.section__main--general h2 span')
@@ -68,7 +84,6 @@ $('.ui-autocomplete-input~button').click(function(e) {
 })
 
 function populateOrdersTableElements(charges, revenue, $tableElement) {
-  console.log(revenue)
   let chargesTableElements = `<table>
     <thead>
       <tr>
@@ -79,7 +94,7 @@ function populateOrdersTableElements(charges, revenue, $tableElement) {
     </thead>
     <tbody>`;
   if (!charges.length) {
-    chargesTableElements = `<p>No room service orders found for this date.</p>`;
+    chargesTableElements = `<p>No room service orders found.</p>`;
   } else {
     chargesTableElements += charges.reduce((acc, charge) => {
       acc += `
@@ -114,7 +129,11 @@ $datePickerButton.click(function(e) {
   e.preventDefault();
   hotel.currentDate = $('#datepicker').val().split('-').join('/');
   populateOrdersTableElements(hotel.returnTodaysRoomServicesCharges(hotel.currentDate),
-    hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable)
+    hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
+  if (hotel.customerSelected) {
+    $('.section__orders--customer').removeClass('hidden');
+    populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
+  }
 })
 
 
@@ -131,7 +150,8 @@ function handleCustomerSearch() {
     $('.section__customers--search--error').removeClass('hidden')
   } else {
     hotel.customerSelected = foundUser;
-    populateCustomerInfo(hotel.customerSelected)
+    $('.section__orders--customer').removeClass('hidden');
+    populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
   }
 }
 
@@ -139,20 +159,27 @@ function updateShowingDetailsSpan (user) {
   $('header h3 span:nth-of-type(1)').text(user.name)
 }
 
-function populateCustomerInfo(user) {
+function populateCustomerInfo(user, date) {
   $('header h3 span:nth-of-type(2)').removeClass('hidden')
   updateShowingDetailsSpan(user);
-  populateOrdersCustomerInfo(user, hotel.roomServices, hotel.currentDate)
+  populateOrdersCustomerInfo(user, hotel.roomServices, date)
 }
 
 let $customerOrderTable = $('.section__orders--customer--table')
 
+let $customerDayOrder = $('.section__orders--customer--daily-charge')
+
 function populateOrdersCustomerInfo(user, roomServices, date) {
   let userDayCharges = user.returnChargesForDay(roomServices, date);
-  console.log(userDayCharges)
   let table = populateOrdersTableElements(user.returnChargesForDay(roomServices, date), 
-    user.returnAllTimeRoomServiceDollars(roomServices), $customerOrderTable)
-  console.log(user.returnChargesForDay(roomServices, date));
+    user.returnAllTimeRoomServiceDollars(roomServices), $customerOrderTable);
+  populateCustomerDayOrder(user, roomServices, date);
+}
+
+function populateCustomerDayOrder(user, roomServices, date) {
+  let dayCharges = user.returnChargesForDay(roomServices, date);
+  let totalCharge = user.returnTotalForDay(roomServices, date);
+  $customerDayOrder.text(`$${totalCharge}`);
 }
 
 function populateGeneralizedInfo() {
@@ -164,6 +191,7 @@ function populateGeneralizedInfo() {
 
 $('header h3 span:nth-of-type(2)').click(function() {
   populateGeneralizedInfo();
+  
 })
 
 let $roomsSection = $('.section__rooms');

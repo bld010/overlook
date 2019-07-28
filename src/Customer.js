@@ -10,10 +10,19 @@ class Customer {
 
   returnChargesForDay(roomServices, date) {
     if (this.returnAllRoomServices(roomServices).length) {
-      return this.returnAllRoomServices(roomServices).filter(charge => charge.date = date)
+      return this.returnAllRoomServices(roomServices).filter(charge => charge.date === date)
     } else {
       return []
     }
+  }
+
+  returnTotalForDay(roomServices, date) {
+    let charges = this.returnChargesForDay(roomServices, date);
+    console.log(charges, date)
+    return (charges.reduce((acc, charge) => {
+      acc += charge.totalCost;
+      return acc
+    }, 0)).toFixed(2)
   }
 
   returnAllTimeRoomServiceDollars(roomServices) {

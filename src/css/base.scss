@@ -181,8 +181,6 @@ form.section__customers--new-customer {
   display: none;
 }
 
-
-
 .section__orders--general--table {
   & table {
     border-collapse: collapse;
@@ -235,8 +233,6 @@ form.section__customers--new-customer {
     @include widget-heading($orders-color)
   }
 }
-
-
 
 .section__orders form {
   display: flex;
