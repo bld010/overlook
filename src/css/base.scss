@@ -181,13 +181,6 @@ nav {
   background-color: #0088cc;
 }
 
-form.section__customers--new-customer {
-  height: 200px;
-  width: 400px;
-  border: 2px solid $customers-color;
-  padding: 20px;
-}
-
 .ui-helper-hidden-accessible>div {
   display: none;
 }
@@ -239,6 +232,33 @@ form.section__customers--new-customer {
   padding-top: 14px;
   text-transform: lowercase;
   font-weight: 300;
+}
+
+.section__customers--select-customer-prompt,
+.section__customers--new-customer {
+  @include widget-styles($customers-color)
+
+  & h3 {
+    @include widget-heading($customers-color)
+  }
+}
+
+.section__customers--general {
+  display: flex;
+  flex-direction: row;
+}
+
+.section__rooms--general {
+  @include widget-styles($rooms-color)
+
+    & h3 {
+      @include widget-heading($rooms-color)
+    }
+
+    & p {
+      margin: 20px auto;
+      text-align: center;
+    }
 }
 
 .section__orders--general {

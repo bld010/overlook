@@ -27,10 +27,10 @@ let $juniorSuitesAvailable = $('.section__main--general ul li span').eq(2);
 let $suitesAvailable = $('.section__main--general ul li span').eq(3);
 let $todaysRoomServicesRevenue = $('.section__main--general ul li span').eq(4);
 let $todaysBookingsRevenue = $('.section__main--general ul li span').eq(5);
-let $mostPopularBookingDateSpan = $('.section__rooms--general h3 span').eq(0);
-let $mostPopularBookingTotalSpan = $('.section__rooms--general h3 span').eq(1);
-let $leastPopularBookingDateSpan = $('.section__rooms--general h3:nth-child(2) span').eq(0);
-let $leastPopularBookingTotalSpan = $('.section__rooms--general h3:nth-child(2) span').eq(1);
+let $mostPopularBookingDateSpan = $('.section__rooms--general span').eq(0);
+let $mostPopularBookingTotalSpan = $('.section__rooms--general span').eq(1);
+let $leastPopularBookingDateSpan = $('.section__rooms--general span').eq(2);
+let $leastPopularBookingTotalSpan = $('.section__rooms--general span').eq(3);
 let $navRoomsTab = $('.nav__rooms');
 let $navCustomersTab = $('.nav__customers');
 let $navMainTab = $('.nav__main');
@@ -87,7 +87,7 @@ function populateItemsPageLoad() {
   $mostPopularBookingDateSpan.text(hotel.returnMostPopularBookingDate().date)
   $mostPopularBookingTotalSpan.text(hotel.returnMostPopularBookingDate().bookings)
   $leastPopularBookingDateSpan.text(hotel.returnLeastPopularBookingDate().date)
-  $leastPopularBookingTotalSpan.text(hotel.returnLeastPopularBookingDate().bookings)
+  $leastPopularBookingTotalSpan.text(50 - hotel.returnLeastPopularBookingDate().bookings)
   populateOrdersTableElements(hotel.returnTodaysRoomServicesCharges(hotel.currentDate),
   hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
   $todaysDateDisplay.text(hotel.currentDate)

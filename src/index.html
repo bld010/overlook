@@ -32,10 +32,6 @@
           <li class="nav__orders disabled">Orders</li>
         </ul>
       </nav>
-
-  
-    
-
     <section class="section__main">
       <article class="section__main--general">
           <div class="section__main--general--loading">
@@ -60,45 +56,40 @@
       </div>
       </section>
     </section>
-
     <section class="section__rooms hidden">
       <article class="section__rooms--general">
-        <h3>Most Popular Booking Date: <span>[Date]</span> (<span>0</span> bookings)</h3>
-        <h3>Most Rooms Available On: <span>[Date]</span> (<span>0</span> bookings)</h3>
+        <h3>Most Popular Booking Date: </h3>
+        <p><span>[Date]</span> (<span>0</span> bookings)</p>
+        <h3>Most Rooms Available On: </h3>
+        <p><span>[Date]</span> (<span>0</span> rooms available)</p>
       </article>
     </section>
-
-
     <section class="section__customers hidden">
       <article class="section__customers--general">
-        <h3>No Customer Selected</h3>
-        <h4>Search for one in the top right corner or add one below.</h4>
-          <form class="section__customers--new-customer">
-            <h3>Add a New Customer</h3>
-            <label for="new-customer-name-input">Enter New Customer's Name</label>
-            <input id="new-customer-name-input">
-            <button>Add New Customer</button>
-          </form>
+        <form class="section__customers--new-customer">
+          <h3>Add a New Customer</h3>
+          <label for="new-customer-name-input">Enter New Customer's Name</label>
+          <input id="new-customer-name-input">
+          <button>Add New Customer</button>
+        </form>
+      </article>
+      <article class="section__customers--select-customer-prompt">
+          <h3>No Customer Selected</h3>
+          <h4>Search for one in the top right corner or add one below.</h4>
       </article>
     </section>
-
     <section class="section__orders hidden">
-        <article class="section__orders--general">
-          <h3>Today's Room Service Orders: </h3>
-          <div class="section__orders--general--table"> 
-          </div>
-        </article>
-
-        <article class="section__orders--customer hidden">
-          <h3>Customer's Room Service History: </h3>
-          <div class="section__orders--customer--table"></div>
-          <h3>Customer's Total Charge Today:</h3>
-          <div class="section__orders--customer--daily-charge"></div>
-        </article>
-
-
+      <article class="section__orders--general">
+        <h3>Today's Room Service Orders: </h3>
+        <div class="section__orders--general--table"> 
+        </div>
+      </article>
+      <article class="section__orders--customer hidden">
+        <h3>Customer's Room Service History: </h3>
+        <div class="section__orders--customer--table"></div>
+        <h3>Customer's Total Charge Today:</h3>
+        <div class="section__orders--customer--daily-charge"></div>
+      </article>
     </section>
-
-
   </body>
 </html>
