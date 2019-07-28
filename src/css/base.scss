@@ -181,25 +181,29 @@ form.section__customers--new-customer {
   display: none;
 }
 
+@mixin orders-table() {
+  border-collapse: collapse;
+  border: solid black;
+  border-width: 0 0 1px 0;
+  margin: 10px auto 10px auto;
+  width: 98%;
+  & th, td {
+    border: 1px solid black;
+    padding: 5px;
+  } 
+  
+  & thead {
+    background: black;
+    color: white;
+    font-weight: bold;
+    text-transform: lowercase;
+  }
+}
+
 .section__orders--general--table {
   & table {
-    border-collapse: collapse;
-    border: solid black;
-    border-width: 0 0 1px 0;
-    margin: 10px auto 10px auto;
-    width: 98%;
+    @include orders-table()
   }
-    & th, td {
-      border: 1px solid black;
-      padding: 5px;
-    } 
-    
-    & thead {
-      background: black;
-      color: white;
-      font-weight: bold;
-      text-transform: lowercase;
-    }
   & p {
     text-align: center;
     margin: 20px;
@@ -266,3 +270,26 @@ form.section__customers--new-customer {
     }
 }
 
+
+.section__orders--customer {
+  @include widget-styles($orders-color);
+
+    & h3 {
+      @include widget-heading($orders-color);
+    }
+
+    & p {
+      text-align: center;
+      margin: 20px 0 75px 0;
+    }
+
+    & table {
+      @include orders-table();
+    }
+}
+
+.section__orders--customer--daily-charge {
+  text-align: center;
+  font-size: 50px;
+  margin: 20px 0 20px 0;
+}

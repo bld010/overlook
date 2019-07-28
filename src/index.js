@@ -17,9 +17,9 @@ let hotel = new Hotel()
 
 function formatDate() {
   var date = new Date(),
-      month = '' + (date.getMonth() + 1),
-      day = '' + date.getDate(),
-      year = date.getFullYear();
+    month = '' + (date.getMonth() + 1),
+    day = '' + date.getDate(),
+    year = date.getFullYear();
 
   if (month.length < 2) month = '0' + month;
   if (day.length < 2) day = '0' + day;
@@ -191,6 +191,7 @@ function populateGeneralizedInfo() {
 
 $('header h3 span:nth-of-type(2)').click(function() {
   populateGeneralizedInfo();
+  $('.section__orders--customer').addClass('hidden')
   
 })
 
@@ -247,7 +248,7 @@ $occupancyPercentage.text(hotel.returnTodaysOccupancyPercentage(hotel.currentDat
 $availableRooms.text(hotel.returnTodaysUnbookedRooms(hotel.currentDate).length);
 $todaysRevenue.text('$ ' + hotel.returnTodaysTotalRevenue(hotel.currentDate).toFixed(2));
 $todaysRoomServicesRevenue.text('$ ' + hotel.returnTodaysRoomServicesRevenue(hotel.currentDate));
-$todaysBookingsRevenue.text('$ ' + hotel.returnTodaysBookingRevenue(hotel.currentDate));
+$todaysBookingsRevenue.text(`$${(hotel.returnTodaysBookingRevenue(hotel.currentDate)).toFixed(2)}`);
 $singleRoomsAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'single room').length);
 $residentialSuitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'residential suite').length);
 $juniorSuitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'junior suite').length);
