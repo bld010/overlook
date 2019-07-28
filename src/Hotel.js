@@ -1,17 +1,17 @@
-import bookingsData from '../data/bookings-data.js';
-import roomsData from '../data/rooms-data.js';
-import usersData from '../data/users-data.js';
-import roomServicesData from '../data/roomServices-data.js';
+// import bookingsData from '../data/bookings-data.js';
+// import roomsData from '../data/rooms-data.js';
+// import usersData from '../data/users-data.js';
+// import roomServicesData from '../data/roomServices-data.js';
 import Customer from './Customer.js'
 
 class Hotel {
-  constructor() {
-    this.users = usersData.users.map(user => new Customer(user));
-    this.bookings = bookingsData.bookings;
-    this.roomServices = roomServicesData.roomServices;
-    this.rooms = roomsData.rooms;
+  constructor(users, bookings, roomServices, rooms, date) {
+    this.users = users.map(user => new Customer(user));
+    this.bookings = bookings;
+    this.roomServices = roomServices;
+    this.rooms = rooms;
     this.customerSelected = null;
-    this.currentDate = "2019/09/22";
+    this.currentDate = date;
   }
 
   returnTodaysTotalRevenue(date) {
@@ -35,7 +35,6 @@ class Hotel {
     } else {
       return 0
     }
-    
   }
 
   returnTodaysBookings(date) {
@@ -44,7 +43,7 @@ class Hotel {
 
   returnTodaysBookedRooms(date) {
     let todaysBookedRoomNumbers = this.returnTodaysBookedRoomNumbers(date)
-    return roomsData.rooms.filter(room => {
+    return this.rooms.filter(room => {
       return todaysBookedRoomNumbers.includes(room.number)
     })
   }

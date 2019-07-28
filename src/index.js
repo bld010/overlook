@@ -4,74 +4,112 @@ import 'jquery-ui/ui/widgets/autocomplete';
 import 'jquery-ui/ui/widgets/datepicker';
 import './css/base.scss';
 import Hotel from './Hotel.js';
-import bookingsData from '../data/bookings-data.js';
-import roomsData from '../data/rooms-data.js';
-import usersData from '../data/users-data.js';
-import roomServicesData from '../data/roomServices-data.js'
 import Customer from './Customer.js'
 import domUpdates from './domUpdates.js';
+import './images/loading-spinner.gif'
 
+let usersFetch = fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users');
+let roomsFetch = fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/rooms/rooms');
+let bookingsFetch = fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings');
+let roomServicesFetch = fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/room-services/roomServices'); 
+let hotel = null;
+let date = formatDate();
 
-let hotel = new Hotel()
+// Query Selectors
 
+let $todaysDateDisplay = $('.section__main--general h2 span');
+let $occupancyPercentage = $('.section__main--general h3 span').eq(0);
+let $availableRooms = $('.section__main--general h3 span').eq(1);
+let $todaysRevenue = $('.section__main--general h3 span').eq(2);
+let $singleRoomsAvailable = $('.section__main--general ul li span').eq(0);
+let $residentialSuitesAvailable = $('.section__main--general ul li span').eq(1);
+let $juniorSuitesAvailable = $('.section__main--general ul li span').eq(2);
+let $suitesAvailable = $('.section__main--general ul li span').eq(3);
+let $todaysRoomServicesRevenue = $('.section__main--general ul li span').eq(4);
+let $todaysBookingsRevenue = $('.section__main--general ul li span').eq(5);
+let $mostPopularBookingDateSpan = $('.section__rooms--general h3 span').eq(0);
+let $mostPopularBookingTotalSpan = $('.section__rooms--general h3 span').eq(1);
+let $leastPopularBookingDateSpan = $('.section__rooms--general h3:nth-child(2) span').eq(0);
+let $leastPopularBookingTotalSpan = $('.section__rooms--general h3:nth-child(2) span').eq(1);
+let $navRoomsTab = $('.nav__rooms');
+let $navCustomersTab = $('.nav__customers');
+let $navMainTab = $('.nav__main');
+let $navOrdersTab = $('.nav__orders');
+let $generalOrderTable = $('.section__orders--general--table');
+let $datePickerButton = $('#datepicker~button');
+let $customerOrderTable = $('.section__orders--customer--table');
+let $customerDayOrder = $('.section__orders--customer--daily-charge');
+let $roomsSection = $('.section__rooms');
+let $mainSection = $('.section__main');
+let $ordersSection = $('.section__orders');
+let $customersSection = $('.section__customers');
+let sections = [$mainSection, $ordersSection, $roomsSection, $customersSection]
+let $datepicker = ('#datepicker');
+
+$('.section__main--general--content').addClass('hidden')
+
+Promise.all([usersFetch, bookingsFetch, roomServicesFetch, roomsFetch])
+  .then(values => Promise.all(values.map(value => value.json())))
+  .then(results => {
+    let users = results.find(data => data.hasOwnProperty('users')).users;
+    let rooms = results.find(data => data.hasOwnProperty('rooms')).rooms;
+    let bookings = results.find(data => data.hasOwnProperty('bookings')).bookings;
+    let roomServices = results.find(data => data.hasOwnProperty('roomServices')).roomServices;
+
+    hotel = new Hotel(users, bookings, roomServices, rooms, date);
+
+    console.log(hotel)
+  });
 
 function formatDate() {
   var date = new Date(),
     month = '' + (date.getMonth() + 1),
     day = '' + date.getDate(),
     year = date.getFullYear();
-
   if (month.length < 2) month = '0' + month;
   if (day.length < 2) day = '0' + day;
-
-  hotel.currentDate = [year, month, day].join('/');
+  return [year, month, day].join('/');
 }
-
-formatDate();
-
-
-// Query Selectors
-
-let $todaysDateDisplay = $('.section__main--general h2 span')
-let $occupancyPercentage = $('.section__main--general h3 span').eq(0);
-let $availableRooms = $('.section__main--general h3 span').eq(1);
-let $todaysRevenue = $('.section__main--general h3 span').eq(2);
-let $singleRoomsAvailable = $('.section__main--general ul li span').eq(0);
-let $residentialSuitesAvailable = $('.section__main--general ul li span').eq(1)
-let $juniorSuitesAvailable = $('.section__main--general ul li span').eq(2);
-let $suitesAvailable = $('.section__main--general ul li span').eq(3);
-let $todaysRoomServicesRevenue = $('.section__main--general ul li span').eq(4);
-let $todaysBookingsRevenue = $('.section__main--general ul li span').eq(5);
-
-let $mostPopularBookingDateSpan = $('.section__rooms--general h3 span').eq(0);
-let $mostPopularBookingTotalSpan = $('.section__rooms--general h3 span').eq(1);
-let $leastPopularBookingDateSpan = $('.section__rooms--general h3:nth-child(2) span').eq(0);
-let $leastPopularBookingTotalSpan = $('.section__rooms--general h3:nth-child(2) span').eq(1);
-
-let $navRoomsTab = $('.nav__rooms');
-let $navCustomersTab = $('.nav__customers');
-let $navMainTab = $('.nav__main');
-let $navOrdersTab = $('.nav__orders');
-
-let $generalOrderTable = $('.section__orders--general--table')
-
-
-let $datepicker = ('#datepicker')
 
 //pageLoad elements
 
-$mostPopularBookingDateSpan.text(hotel.returnMostPopularBookingDate().date)
-$mostPopularBookingTotalSpan.text(hotel.returnMostPopularBookingDate().bookings)
-$leastPopularBookingDateSpan.text(hotel.returnLeastPopularBookingDate().date)
-$leastPopularBookingTotalSpan.text(hotel.returnLeastPopularBookingDate().bookings)
-populateOrdersTableElements(hotel.returnTodaysRoomServicesCharges(hotel.currentDate),
-hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
+
+
+//show progress bar, then run setTimeout
+
+setTimeout(function () {
+  $('.section__main--general--content').removeClass('hidden')
+  $('.section__main--general--loading').addClass('hidden');
+  populateItemsPageLoad();
+},3000)
+
+function populateItemsPageLoad() {
+  $mostPopularBookingDateSpan.text(hotel.returnMostPopularBookingDate().date)
+  $mostPopularBookingTotalSpan.text(hotel.returnMostPopularBookingDate().bookings)
+  $leastPopularBookingDateSpan.text(hotel.returnLeastPopularBookingDate().date)
+  $leastPopularBookingTotalSpan.text(hotel.returnLeastPopularBookingDate().bookings)
+  populateOrdersTableElements(hotel.returnTodaysRoomServicesCharges(hotel.currentDate),
+    hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
+  $todaysDateDisplay.text(hotel.currentDate)
+  $occupancyPercentage.text(hotel.returnTodaysOccupancyPercentage(hotel.currentDate) + '%');
+  $availableRooms.text(hotel.returnTodaysUnbookedRooms(hotel.currentDate).length);
+  $todaysRevenue.text('$ ' + hotel.returnTodaysTotalRevenue(hotel.currentDate).toFixed(2));
+  $todaysRoomServicesRevenue.text('$ ' + hotel.returnTodaysRoomServicesRevenue(hotel.currentDate));
+  $todaysBookingsRevenue.text(`$${(hotel.returnTodaysBookingRevenue(hotel.currentDate)).toFixed(2)}`);
+  $singleRoomsAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'single room').length);
+  $residentialSuitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'residential suite').length);
+  $juniorSuitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'junior suite').length);
+  $suitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'suite').length);
+  loadAutocompleteSearch();
+}
 
 // search
 
-$( '#section__customers--search').autocomplete({
-  source: hotel.users.map(user => user.name)
-});
+function loadAutocompleteSearch() {
+  $( '#section__customers--search').autocomplete({
+    source: hotel.users.map(user => user.name)
+  });
+}
 
 $('.ui-autocomplete-input').focus(function() {
   $('.ui-autocomplete-input').val('');
@@ -119,7 +157,6 @@ function populateOrdersTableElements(charges, revenue, $tableElement) {
 
 // orders datepicker
 
-let $datePickerButton = $('#datepicker~button')
 
 $(function () {
   $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
@@ -135,8 +172,6 @@ $datePickerButton.click(function(e) {
     populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
   }
 })
-
-
 
 $('#datepicker').datepicker({
   dateFormat: 'yy-mm-dd'
@@ -165,10 +200,6 @@ function populateCustomerInfo(user, date) {
   populateOrdersCustomerInfo(user, hotel.roomServices, date)
 }
 
-let $customerOrderTable = $('.section__orders--customer--table')
-
-let $customerDayOrder = $('.section__orders--customer--daily-charge')
-
 function populateOrdersCustomerInfo(user, roomServices, date) {
   let userDayCharges = user.returnChargesForDay(roomServices, date);
   let table = populateOrdersTableElements(user.returnChargesForDay(roomServices, date), 
@@ -194,13 +225,6 @@ $('header h3 span:nth-of-type(2)').click(function() {
   $('.section__orders--customer').addClass('hidden')
   
 })
-
-let $roomsSection = $('.section__rooms');
-let $mainSection = $('.section__main');
-let $ordersSection = $('.section__orders');
-let $customersSection = $('.section__customers')
-
-let sections = [$mainSection, $ordersSection, $roomsSection, $customersSection]
 
 $navRoomsTab.click(function() {
   handleSectionToggling($roomsSection)
@@ -241,19 +265,6 @@ function hideSections (selectedSection) {
     }
   })
 }
-
-
-$todaysDateDisplay.text(hotel.currentDate)
-$occupancyPercentage.text(hotel.returnTodaysOccupancyPercentage(hotel.currentDate) + '%');
-$availableRooms.text(hotel.returnTodaysUnbookedRooms(hotel.currentDate).length);
-$todaysRevenue.text('$ ' + hotel.returnTodaysTotalRevenue(hotel.currentDate).toFixed(2));
-$todaysRoomServicesRevenue.text('$ ' + hotel.returnTodaysRoomServicesRevenue(hotel.currentDate));
-$todaysBookingsRevenue.text(`$${(hotel.returnTodaysBookingRevenue(hotel.currentDate)).toFixed(2)}`);
-$singleRoomsAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'single room').length);
-$residentialSuitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'residential suite').length);
-$juniorSuitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'junior suite').length);
-$suitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'suite').length);
-
 
 $('.section__customers--new-customer button').click(function(e) {
   e.preventDefault();
