@@ -71,6 +71,17 @@ h2 {
   margin: 0;
 }
 
+.header__forms {
+  display: flex;
+  flex-direction: row;
+  
+    & form {
+      display: flex;
+      flex-direction: column;
+    }
+
+}
+
 nav {
   height: 10%;
   background: $primary-background;

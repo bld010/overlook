@@ -89,7 +89,7 @@ function populateItemsPageLoad() {
   $leastPopularBookingDateSpan.text(hotel.returnLeastPopularBookingDate().date)
   $leastPopularBookingTotalSpan.text(hotel.returnLeastPopularBookingDate().bookings)
   populateOrdersTableElements(hotel.returnTodaysRoomServicesCharges(hotel.currentDate),
-    hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
+  hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
   $todaysDateDisplay.text(hotel.currentDate)
   $occupancyPercentage.text(hotel.returnTodaysOccupancyPercentage(hotel.currentDate) + '%');
   $availableRooms.text(hotel.returnTodaysUnbookedRooms(hotel.currentDate).length);
@@ -106,17 +106,17 @@ function populateItemsPageLoad() {
 // search
 
 function loadAutocompleteSearch() {
-  $( '#section__customers--search').autocomplete({
+  $( '#header__search').autocomplete({
     source: hotel.users.map(user => user.name)
   });
 }
 
 $('.ui-autocomplete-input').focus(function() {
   $('.ui-autocomplete-input').val('');
-  $('.section__customers--search--error').addClass('hidden')
+  $('.header__search--error').addClass('hidden')
 })
 
-$('.ui-autocomplete-input~button').click(function(e) {
+$('#header__search~button').click(function(e) {
   e.preventDefault();
   handleCustomerSearch();
 })
@@ -165,12 +165,13 @@ $(function () {
 $datePickerButton.click(function(e) {
   e.preventDefault();
   hotel.currentDate = $('#datepicker').val().split('-').join('/');
+  populateItemsPageLoad();
   populateOrdersTableElements(hotel.returnTodaysRoomServicesCharges(hotel.currentDate),
-    hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
+  hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
   if (hotel.customerSelected) {
     $('.section__orders--customer').removeClass('hidden');
     populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
-  }
+  } 
 })
 
 $('#datepicker').datepicker({
@@ -182,7 +183,7 @@ function handleCustomerSearch() {
   $('.ui-autocomplete-input').val('');
   let foundUser = hotel.users.find(user => user.name === searchInput);
   if (!foundUser) {
-    $('.section__customers--search--error').removeClass('hidden')
+    $('.header__search--error').removeClass('hidden')
   } else {
     hotel.customerSelected = foundUser;
     $('.section__orders--customer').removeClass('hidden');
@@ -272,5 +273,5 @@ $('.section__customers--new-customer button').click(function(e) {
   domUpdates.createNewCustomer(hotel, {id: hotel.users.length + 1, name: `${newCustomerName}`})
   $('#new-customer-name-input').val('');
   populateCustomerInfo(hotel.customerSelected);
-  $('.section__customers--search--error').addClass('hidden')
+  $('.header__search--error').addClass('hidden')
 })

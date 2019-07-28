@@ -8,15 +8,21 @@
     <header>
       <h1>Overlook</h1>
       <h3>Showing Details for: <span>All Customers</span><span class="hidden">[Clear User]</span></h3>
-      <form>
-        <label for="section__customers--search">Customer Search</label>
-        <input placeholder="Customer Name" id="section__customers--search">
-        <button>Search</button>
-        <div class="section__customers--search--error hidden">
-          <p>No results. Try again or add new customers on Customer Tab</p>
-          
-        </div>
-      </form>
+      <div class="header__forms">
+        <form>
+          <label for="header__search">Customer Search</label>
+          <input placeholder="Customer Name" id="header__search">
+          <button>Search</button>
+          <div class="header__search--error hidden">
+            <p>No results. Try again or add new customers on Customer Tab</p>  
+          </div>
+        </form>
+        <form>
+          <label for="datepicker">Date Search</label>
+          <input placeholder="Choose a Date" id="datepicker">
+          <button>Search</button>
+        </form>
+      </div>
     </header>
       <nav>
         <ul>
@@ -77,11 +83,6 @@
     </section>
 
     <section class="section__orders hidden">
-        <form>
-          <label for="datepicker">Search for Orders By Date:</label>
-          <div id="datepicker"></div>
-          <button>Search</button>
-        </form>
         <article class="section__orders--general">
           <h3>Today's Room Service Orders: </h3>
           <div class="section__orders--general--table"> 
