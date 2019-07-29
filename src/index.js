@@ -5,6 +5,7 @@ import 'jquery-ui/ui/widgets/datepicker';
 import './css/base.scss';
 import Hotel from './Hotel.js';
 import Customer from './Customer.js'
+import Bookings from './Bookings.js'
 import domUpdates from './domUpdates.js';
 import './images/loading-spinner.gif'
 
@@ -54,7 +55,15 @@ let $filterJuniorSuitesButton = $('.section__rooms--filter-junior-suites');
 let $filterSingleRoomsButton = $('.section__rooms--filter-single-rooms');
 let $filterAllRoomsButton = $('.section__rooms--filter-all-rooms');
 
-
+$availableRoomsDiv.on('click', function(e) {
+  if (e.target.classList.contains('book-room-button')) {
+    let roomNumber = parseInt(e.target.closest('div').dataset.roomnumber);
+    let bookingObject = {'userID': hotel.customerSelected.id, 'date': hotel.currentDate, 'roomNumber': roomNumber}
+    let newBooking = new Bookings(bookingObject)
+    hotel.bookings.unshift(newBooking)
+    console.log(hotel.bookings[0])
+  }
+})
 
 $filterSuitesButton.on('click', function(e) {
   e.preventDefault();
@@ -138,7 +147,7 @@ function populateItemsPageLoad() {
   $juniorSuitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'junior suite').length);
   $suitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'suite').length);
   loadAutocompleteSearch();
-  $availableRoomsDiv.html(populateAvailableRooms(hotel.returnTodaysUnbookedRooms(hotel.date))); 
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.returnTodaysUnbookedRooms(hotel.currentDate))); 
 }
 
 function populateAvailableRooms(availableRooms) {
@@ -148,10 +157,9 @@ function populateAvailableRooms(availableRooms) {
     acc +=`<p>Number of Beds: ${room.numBeds}</p>`
     acc += `<p>Bed Size: ${room.bedSize}</p>`
     acc += `<p>Bidet: ${room.bidet}</p>`
-    acc += '<button>Book</button></div>'
+    acc += '<button class="book-room-button">Book</button></div>'
     return acc
   }, '')
-  console.log(bookingsElements)
   return bookingsElements;
 }
 

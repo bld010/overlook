@@ -1,13 +1,13 @@
-import bookingsData from '../data/bookings-data.js';
-import Rooms from './Rooms.js'
-import Hotel from './Hotel.js'
+// import bookingsData from '../data/bookings-data.js';
+// import Rooms from './Rooms.js'
+// import Hotel from './Hotel.js'
 
 
 class Bookings {
   constructor(bookingObject) {
-      this.id: bookingObject.userID,
-      this.date: bookingObject.date,
-      this.roomNumber: bookingObject.roomNumber,
+      this.userID = bookingObject.userID;
+      this.date = bookingObject.date;
+      this.roomNumber = bookingObject.roomNumber;
   }
 
   addToBookingsList(hotel) {
@@ -25,3 +25,4 @@ class Bookings {
 
 }
 
+export default Bookings;
