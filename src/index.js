@@ -43,6 +43,8 @@ let $roomsSection = $('.section__rooms');
 let $mainSection = $('.section__main');
 let $ordersSection = $('.section__orders');
 let $customersSection = $('.section__customers');
+let $customerBookingTodaySpan =  $('.section__rooms--customer-booking-today span')
+let $customerBookingsHistoryList = $('.section__rooms--customer-bookings-history ul');
 let sections = [$mainSection, $ordersSection, $roomsSection, $customersSection]
 let $datepicker = ('#datepicker');
 
@@ -196,9 +198,52 @@ function updateShowingDetailsSpan (user) {
 }
 
 function populateCustomerInfo(user, date) {
-  $('header h3 span:nth-of-type(2)').removeClass('hidden')
+  $('header h3 span:nth-of-type(2)').removeClass('hidden');
   updateShowingDetailsSpan(user);
-  populateOrdersCustomerInfo(user, hotel.roomServices, date)
+  populateOrdersCustomerInfo(user, hotel.roomServices, date);
+  populateRoomsCustomerInfo(user, hotel.bookings, date)
+}
+
+
+function populateRoomsCustomerInfo(user, bookings, date) {
+  let customerBookingHistoryListElements = generateBookingHistoryListElements(user, bookings);
+  $customerBookingsHistoryList.html(customerBookingHistoryListElements)
+  populateRoomsCustomerDay(user, bookings, date)
+  $('.section__rooms--customer-bookings-history, .section__rooms--customer-booking-today').removeClass('hidden')
+  
+}
+
+function populateRoomsCustomerDay(user, bookings, date) {
+  let todaysBooking = user.returnBookingForDay(bookings, date);
+  if (todaysBooking) {
+    $('.section__rooms--customer-booking-today button').addClass('hidden');
+    let room = hotel.returnTodaysBookedRooms(date).find(room => room.number === todaysBooking.roomNumber)
+    $customerBookingTodaySpan.html(`
+      <ul>
+        <li>Room: ${todaysBooking.roomNumber}</li>
+        <li>Type: ${room.roomType}</li>
+        <li>Bidet: ${room.bidet}</li>
+        <li>Bed Size: ${room.bedSize}</li>
+        <li>Number of Beds: ${room.numBeds}</li>
+        <li>Cost Per Night: $${room.costPerNight}</li>
+      </ul>`);
+  } else {
+    $customerBookingTodaySpan.text('No bookings for today');
+    $('.section__rooms--customer-booking-today button').removeClass('hidden');
+  }
+}
+
+function generateBookingHistoryListElements(user, bookings) {
+  let allCustomerBookings = user.returnAllBookings(bookings);
+  if (allCustomerBookings.length) {
+    return allCustomerBookings.sort((a,b) => a.date.localeCompare(b.date)).reduce((acc, booking) => {
+      acc += 
+      `<li>Date: ${booking.date}, Room: ${booking.roomNumber}</li>`
+      return acc;
+    }, ``)
+  } else {
+    return `<li>No Bookings Found for this User</li>`
+  }
 }
 
 function populateOrdersCustomerInfo(user, roomServices, date) {
@@ -223,7 +268,8 @@ function populateGeneralizedInfo() {
 
 $('header h3 span:nth-of-type(2)').click(function() {
   populateGeneralizedInfo();
-  $('.section__orders--customer').addClass('hidden')
+  $('.section__orders--customer').addClass('hidden');
+  $('.section__rooms--customer-bookings-history').addClass('hidden')
   
 })
 
@@ -273,5 +319,8 @@ $('.section__customers--new-customer button').click(function(e) {
   domUpdates.createNewCustomer(hotel, {id: hotel.users.length + 1, name: `${newCustomerName}`})
   $('#new-customer-name-input').val('');
   populateCustomerInfo(hotel.customerSelected);
-  $('.header__search--error').addClass('hidden')
+  loadAutocompleteSearch()
+  $('.header__search--error').addClass('hidden');
 })
+
+

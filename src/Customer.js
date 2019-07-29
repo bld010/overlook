@@ -4,6 +4,17 @@ class Customer {
     this.name = user.name;
   }
 
+
+  returnAllBookings(hotelBookings) {
+    return hotelBookings.filter(booking => booking.userID === this.id)
+  }
+
+  returnBookingForDay(hotelBookings, date) {
+    let allBookings = this.returnAllBookings(hotelBookings);
+    console.log(allBookings)
+    return allBookings.find(booking => booking.date === date)
+  }
+
   returnAllRoomServices(roomServices) {
     return roomServices.filter(charge => charge.userID === this.id);
   }
@@ -18,7 +29,6 @@ class Customer {
 
   returnTotalForDay(roomServices, date) {
     let charges = this.returnChargesForDay(roomServices, date);
-    console.log(charges, date)
     return (charges.reduce((acc, charge) => {
       acc += charge.totalCost;
       return acc

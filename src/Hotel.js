@@ -1,7 +1,3 @@
-// import bookingsData from '../data/bookings-data.js';
-// import roomsData from '../data/rooms-data.js';
-// import usersData from '../data/users-data.js';
-// import roomServicesData from '../data/roomServices-data.js';
 import Customer from './Customer.js'
 
 class Hotel {
