@@ -47,6 +47,41 @@ let $customerBookingTodaySpan =  $('.section__rooms--customer-booking-today span
 let $customerBookingsHistoryList = $('.section__rooms--customer-bookings-history ul');
 let sections = [$mainSection, $ordersSection, $roomsSection, $customersSection]
 let $datepicker = ('#datepicker');
+let $availableRoomsDiv = $('.section__rooms--new-booking--available-rooms');
+let $filterSuitesButton = $('.section__rooms--filter-suites');
+let $filterResidentialSuitesButton = $('.section__rooms--filter-residential-suites');
+let $filterJuniorSuitesButton = $('.section__rooms--filter-junior-suites');
+let $filterSingleRoomsButton = $('.section__rooms--filter-single-rooms');
+let $filterAllRoomsButton = $('.section__rooms--filter-all-rooms');
+
+
+
+$filterSuitesButton.on('click', function(e) {
+  e.preventDefault();
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "suite")))
+})
+
+$filterResidentialSuitesButton.on('click', function(e) {
+  e.preventDefault();
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "residential suite")))
+})
+
+$filterJuniorSuitesButton.on('click', function(e) {
+  e.preventDefault();
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "junior suite")))
+})
+
+$filterSingleRoomsButton.on('click', function(e) {
+  e.preventDefault();
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "single room")))
+})
+
+$filterAllRoomsButton.on('click', function(e) {
+  e.preventDefault();
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.returnTodaysUnbookedRooms(hotel.currentDate)))
+})
+
+
 
 $('.section__main--general--content').addClass('hidden')
 
@@ -103,6 +138,21 @@ function populateItemsPageLoad() {
   $juniorSuitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'junior suite').length);
   $suitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'suite').length);
   loadAutocompleteSearch();
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.returnTodaysUnbookedRooms(hotel.date))); 
+}
+
+function populateAvailableRooms(availableRooms) {
+  let bookingsElements = availableRooms.reduce((acc, room) => {
+    acc += `<div class="room" data-roomNumber="${room.number}"><h5>Room ${room.number}</h5>`
+    acc += `<p>Type: ${room.roomType}</p>`
+    acc +=`<p>Number of Beds: ${room.numBeds}</p>`
+    acc += `<p>Bed Size: ${room.bedSize}</p>`
+    acc += `<p>Bidet: ${room.bidet}</p>`
+    acc += '<button>Book</button></div>'
+    return acc
+  }, '')
+  console.log(bookingsElements)
+  return bookingsElements;
 }
 
 // search
