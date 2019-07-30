@@ -202,10 +202,11 @@ function loadAutocompleteSearch() {
   });
 }
 
-$('.ui-autocomplete-input').focus(function() {
-  $('.ui-autocomplete-input').val('');
+$('#header__search').on('click', function() {
+  $('input #header__search').val('');
   $('.header__search--error').addClass('hidden');
   $roomServiceMenuSection.addClass('hidden');
+  console.log('hidden')
 })
 
 $('#header__search~button').click(function(e) {
@@ -380,17 +381,37 @@ $navRoomsTab.click(function() {
   handleSectionToggling($roomsSection)
 })
 
+$navRoomsTab.on('keydown', function(e) {
+    if(e.which==13 || e.which==32)
+        $(this).click()
+});
+
 $navCustomersTab.click(function() {
   handleSectionToggling($customersSection)
 })
+
+$navCustomersTab.on('keydown', function(e) {
+  if(e.which==13 || e.which==32)
+      $(this).click()
+});
 
 $navMainTab.click(function () {
   handleSectionToggling($mainSection)
 })
 
+$navMainTab.on('keydown', function(e) {
+  if(e.which==13 || e.which==32)
+      $(this).click()
+});
+
 $navOrdersTab.click(function () {
   handleSectionToggling($ordersSection)
 })
+
+$navOrdersTab.on('keydown', function(e) {
+  if(e.which==13 || e.which==32)
+      $(this).click()
+});
 
 function handleSectionToggling(selectedSection) {
   removeSelectedClass();
