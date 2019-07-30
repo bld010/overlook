@@ -1,0 +1,21 @@
+.ui-autocomplete {
+  list-style: none;
+  background: #ffffff;
+  margin: 0;
+  border: 1px solid black;
+  padding: 0px;
+  width: 100px;
+}
+
+.ui-menu-item {
+  padding-left: 2px;
+}
+
+.ui-state-hover, .ui-state-active {
+  color: #ffffff;
+  background-color: #0088cc;
+}
+
+.ui-helper-hidden-accessible>div {
+  display: none;
+}

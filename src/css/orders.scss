@@ -1,0 +1,98 @@
+@mixin orders-table() {
+  border-collapse: collapse;
+  border: solid black;
+  border-width: 0 0 1px 0;
+  margin: 10px auto 10px auto;
+  width: 98%;
+  & th, td {
+    border: 1px solid black;
+    padding: 5px;
+  } 
+  
+  & thead {
+    background: black;
+    color: white;
+    font-weight: bold;
+    text-transform: lowercase;
+  }
+}
+
+.section__orders {
+  @include section-styles($orders-color)
+  & .hidden {
+    display: none;
+  }
+}
+
+.section__orders--general {
+  @include widget-styles($orders-color);
+  
+  & h3 {
+    @include widget-heading($orders-color)
+  }
+}
+
+.section__orders--general--table {
+  & table {
+    @include orders-table()
+  }
+  & p {
+    text-align: center;
+    margin: 20px;
+  }
+}
+
+.section__orders--customer--daily-charge {
+  text-align: center;
+  font-size: 50px;
+  margin: 20px 0 20px 0;
+}
+
+.section__orders--customer {
+  @include widget-styles($orders-color);
+
+    & h3 {
+      @include widget-heading($orders-color);
+    }
+
+    & p {
+      text-align: center;
+      margin: 20px 0 75px 0;
+    }
+
+    & table {
+      @include orders-table();
+    }
+}
+
+.section__orders form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include widget-styles($orders-color);
+
+    & label {
+      @include widget-heading($orders-color);
+      width: 100%;
+      margin: 0px auto 20px auto;
+    }
+    
+    & button {
+      height: 40px;
+      margin: 10px auto 3px auto;
+      padding: 0;
+      border: 2px solid $orders-color;
+      width: 70%;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      background: $orders-color;
+      text-transform: lowercase;
+      font-size: 20px;
+      font-weight: 300;
+    }
+
+    & button:hover {
+      cursor: pointer;
+    }
+}

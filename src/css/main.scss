@@ -1,0 +1,17 @@
+.section__main {
+  @include section-styles($main-color)
+
+  & .hidden {
+    display: none;
+  }
+}
+
+.section__main--general--content {
+  @include widget-styles($main-color)
+  & h2 {
+    @include widget-heading($main-color)
+  }
+  & h3 {
+    margin: 10px;
+  }
+}

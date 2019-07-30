@@ -1,0 +1,119 @@
+$primary-background: #ffffff;
+$main-color: #77a6f7;
+$rooms-color: #ffa58a;
+$orders-color: #8dcef7;
+$customers-color: #00887A;
+$display-font: 'Roboto', sans-serif;
+
+@mixin section-styles($color) {
+  border: solid $color;
+  border-width: 15px 15px 15px 15px;
+  padding: 30px;
+  min-height: 70vh;
+  border-radius: 8px;
+  display: flex;
+}
+
+@mixin widget-styles($color) {
+  margin:0px 30px 30px 0px;
+  border: 2px solid $color;
+  width: 300px;
+  min-height: 320px;
+  border-radius: 8px;
+  align-self: flex-start; 
+}
+
+@mixin widget-heading($color) {
+  margin: auto;
+  background: $color;
+  font-size: 20px;
+  height: 40px;
+  text-align: center;
+  padding-top: 14px;
+  text-transform: lowercase;
+  font-weight: 300;
+}
+
+.hidden {
+  display: none;
+}
+
+body {
+  background-color: $primary-background;
+  font-family: $display-font;
+  font-weight: 400;
+  width: 90%;
+  margin: auto;
+}
+
+h1 {
+  font-size: 60px;
+  font-weight: 100;
+  display: inline-block;
+  margin: 5px 0px 10px 60px;
+  text-transform: lowercase;
+  position: relative;
+  font-family: $display-font;
+}
+
+h2 {
+  margin: 0;
+}
+
+header {
+  text-transform: lowercase;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  & h3 {
+    margin: 27px auto 0 auto;
+    font-weight: 100;
+    display: inline-block;
+  }
+
+  & span:nth-of-type(1) {
+    font-weight: 400;
+    text-transform: capitalize;
+  }
+
+  & span:nth-of-type(2) {
+    font-size: 10px;
+    margin-left: 5px;
+  }
+
+  & span:nth-of-type(2):hover {
+    cursor: pointer;
+    color: #ffffff;
+    background: $main-color;
+  }
+
+  & form {
+    font-weight: bold;
+    margin: 30px 60px 0px 0px;
+
+    & div p {
+      font-size: 12px;
+      color: darkred;
+      text-transform: uppercase;
+      font-weight: lighter;
+      width: 250px;
+      text-align: center;
+      position: absolute;
+    }
+  }
+}
+
+.header__forms {
+  display: flex;
+  flex-direction: row;
+  
+    & form {
+      display: flex;
+      flex-direction: column;
+    }
+}
+
+.hidden {
+  display: none !important;
+}

@@ -1,0 +1,35 @@
+.section__customers {
+  @include section-styles($customers-color)
+}
+
+.section__customers--select-customer-prompt,
+.section__customers--new-customer {
+  @include widget-styles($customers-color)
+
+  & h3 {
+    @include widget-heading($customers-color)
+  }
+
+  & h4 {
+    margin: 20px;
+  }
+
+  & form {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    width: 80%;
+    margin: 20px auto;
+
+    & button {
+      background: $customers-color;
+      color: #ffffff;
+      font-size: 14px;
+    }
+  }
+}
+
+.section__customers--general {
+  display: flex;
+  flex-direction: row;
+}

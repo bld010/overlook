@@ -1,0 +1,48 @@
+nav {
+  height: 10%;
+  background: $primary-background;
+  margin: 0;
+
+  & ul {
+    list-style: none;
+    width: 75%;
+    margin: 0 5px 0px 5px;
+  }
+    & li {
+      display: inline-block;
+      text-align: center;
+      width: 6em;
+      border: solid;
+      border-width: 0px 0px 10px 0px;
+      margin: 0 0 0 0;
+      font-size: 20px;
+      font-weight: 300;
+      text-transform: lowercase;
+    }
+
+    & li:hover {
+      cursor: pointer;
+    }
+}
+
+@mixin nav-styles($color) {
+  border-color: $color;
+  border-width: 2px 2px 10px 2px;
+  border-radius: 8px 8px 0 0;
+}
+
+.nav__main {
+  @include nav-styles($main-color)
+}
+
+.nav__rooms {
+  @include nav-styles($rooms-color)
+}
+
+.nav__customers {
+  @include nav-styles($customers-color)
+}
+
+.nav__orders {
+  @include nav-styles($orders-color)
+}
