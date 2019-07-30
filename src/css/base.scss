@@ -324,3 +324,13 @@ nav {
   font-size: 50px;
   margin: 20px 0 20px 0;
 }
+
+.section__rooms--new-room-service-order li:hover {
+  background: $rooms-color;
+  cursor: pointer;
+}
+
+.clicked {
+  background: $rooms-color;
+
+}

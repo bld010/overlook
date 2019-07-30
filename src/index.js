@@ -7,6 +7,7 @@ import Hotel from './Hotel.js';
 import Customer from './Customer.js'
 import Bookings from './Bookings.js'
 import domUpdates from './domUpdates.js';
+import RoomServices from './RoomServices.js'
 import './images/loading-spinner.gif'
 
 let usersFetch = fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users');
@@ -55,7 +56,29 @@ let $filterJuniorSuitesButton = $('.section__rooms--filter-junior-suites');
 let $filterSingleRoomsButton = $('.section__rooms--filter-single-rooms');
 let $filterAllRoomsButton = $('.section__rooms--filter-all-rooms');
 let $newRoomServiceOrderButton = $('.new-room-service-order');
+let $roomServiceMenuSection = $('.section__rooms--new-room-service-order')
+let $roomServiceMenuDiv = $('.section__rooms--new-room-service-order div')
+let $submitRoomServiceOrderButton = $('.section__rooms--new-room-service-order button');
 
+
+$('.section__main--general--content').addClass('hidden')
+
+$submitRoomServiceOrderButton.on('click', function(e) {
+  let items = [...$('.section__rooms--new-room-service-order div li.clicked')]
+  items.forEach(item => {
+    let food = item.dataset.food;
+    let price = parseFloat(item.dataset.price);
+    hotel.roomServices.push(new RoomServices(hotel.customerSelected.id, hotel.currentDate, food, price))
+  });
+  $roomServiceMenuSection.addClass('hidden');
+  populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
+})
+
+
+$roomServiceMenuDiv.on('click', function(e) {
+  let menuItem = e.target.closest('li');
+  menuItem.classList.toggle('clicked');
+})
 
 $availableRoomsDiv.on('click', function(e) {
   if (e.target.classList.contains('book-room-button')) {
@@ -96,7 +119,7 @@ $filterAllRoomsButton.on('click', function(e) {
 
 
 
-$('.section__main--general--content').addClass('hidden')
+
 
 Promise.all([usersFetch, bookingsFetch, roomServicesFetch, roomsFetch])
   .then(values => Promise.all(values.map(value => value.json())))
@@ -123,15 +146,28 @@ function formatDate() {
 
 //pageLoad elements
 
-
-
-//show progress bar, then run setTimeout
-
 setTimeout(function () {
   $('.section__main--general--content').removeClass('hidden')
   $('.section__main--general--loading').addClass('hidden');
   populateItemsPageLoad();
+
 },3000)
+
+function populateMenu() {
+  let menu = hotel.roomServices.map(service => {
+    let menuItem = {food: service.food, totalCost: service.totalCost};
+    return menuItem;
+  })
+  menu = [...new Set(menu)]
+  let menuElements = menu.reduce((acc, item) => {
+    acc += `<li data-food="${item.food}" data-price=${item.totalCost}>${item.food}: ${item.totalCost}</li>`
+    return acc;
+  }, `<ul>`)
+  menuElements += `</ul>`
+  $roomServiceMenuDiv.html(menuElements)
+}
+
+
 
 function populateItemsPageLoad() {
   $mostPopularBookingDateSpan.text(hotel.returnMostPopularBookingDate().date)
@@ -151,6 +187,7 @@ function populateItemsPageLoad() {
   $juniorSuitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'junior suite').length);
   $suitesAvailable.text(hotel.filterAvailableRooms(hotel.currentDate, 'suite').length);
   loadAutocompleteSearch();
+  populateMenu();
   $availableRoomsDiv.html(populateAvailableRooms(hotel.returnTodaysUnbookedRooms(hotel.currentDate))); 
 }
 
@@ -233,7 +270,6 @@ $datePickerButton.click(function(e) {
   populateOrdersTableElements(hotel.returnTodaysRoomServicesCharges(hotel.currentDate),
   hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
   if (hotel.customerSelected) {
-    $('.section__orders--customer').removeClass('hidden');
     populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
   } 
 })
@@ -250,7 +286,6 @@ function handleCustomerSearch() {
     $('.header__search--error').removeClass('hidden')
   } else {
     hotel.customerSelected = foundUser;
-    $('.section__orders--customer').removeClass('hidden');
     populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
   }
 }
@@ -260,10 +295,11 @@ function updateShowingDetailsSpan (user) {
 }
 
 function populateCustomerInfo(user, date) {
-  $('header h3 span:nth-of-type(2)').removeClass('hidden');
+  unhideCustomerSections();
   updateShowingDetailsSpan(user);
   populateOrdersCustomerInfo(user, hotel.roomServices, date);
-  populateRoomsCustomerInfo(user, hotel.bookings, date)
+  populateRoomsCustomerInfo(user, hotel.bookings, date);
+  populateItemsPageLoad();
 }
 
 
@@ -275,8 +311,12 @@ function populateRoomsCustomerInfo(user, bookings, date) {
 }
 
 function unhideCustomerSections() {
+  $('header h3 span:nth-of-type(2)').removeClass('hidden');
+  $('.section__orders--customer').removeClass('hidden')
   $('.section__rooms--customer-bookings-history').removeClass('hidden');
   $('.section__rooms--customer-booking-today').removeClass('hidden');
+  $('.section__customers--select-customer-prompt').addClass('hidden')
+
 }
 
 function populateRoomsCustomerDay(user, bookings, date) {
@@ -332,7 +372,9 @@ function populateGeneralizedInfo() {
   $('header h3 span:nth-of-type(2)').addClass('hidden');
   $('header h3 span:nth-of-type(1)').text('All Customers');
   $('.ui-autocomplete-input').val('');
+  $('.section__customers--select-customer-prompt').removeClass('hidden')
   hotel.customerSelected = null;
+  populateItemsPageLoad();
 }
 
 $('header h3 span:nth-of-type(2)').click(function() {
@@ -372,8 +414,7 @@ function removeSelectedClass() {
 
 $newRoomServiceOrderButton.click(function(e) {
   e.preventDefault();
-  //show menu with buttons to order food
-  console.log('pop up new menu')
+  $roomServiceMenuSection.removeClass('hidden');
 })
 
 function unhideSelectedSection(selectedSection) {
@@ -400,9 +441,9 @@ $('.section__customers--new-customer button').click(function(e) {
   let newCustomerName = $('#new-customer-name-input').val();
   domUpdates.createNewCustomer(hotel, {id: hotel.users.length + 1, name: `${newCustomerName}`})
   $('#new-customer-name-input').val('');
-  populateCustomerInfo(hotel.customerSelected);
+  console.log(hotel.customerSelected)
+  populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
   loadAutocompleteSearch()
   $('.header__search--error').addClass('hidden');
 })
-
 
