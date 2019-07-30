@@ -54,6 +54,8 @@ let $filterResidentialSuitesButton = $('.section__rooms--filter-residential-suit
 let $filterJuniorSuitesButton = $('.section__rooms--filter-junior-suites');
 let $filterSingleRoomsButton = $('.section__rooms--filter-single-rooms');
 let $filterAllRoomsButton = $('.section__rooms--filter-all-rooms');
+let $newRoomServiceOrderButton = $('.new-room-service-order');
+
 
 $availableRoomsDiv.on('click', function(e) {
   if (e.target.classList.contains('book-room-button')) {
@@ -62,6 +64,8 @@ $availableRoomsDiv.on('click', function(e) {
     let newBooking = new Bookings(bookingObject)
     hotel.bookings.unshift(newBooking)
     console.log(hotel.bookings[0])
+    $('.section__rooms--new-booking, .section__rooms--new-booking--available-rooms').addClass('hidden');
+    populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
   }
 })
 
@@ -265,16 +269,20 @@ function populateCustomerInfo(user, date) {
 
 function populateRoomsCustomerInfo(user, bookings, date) {
   let customerBookingHistoryListElements = generateBookingHistoryListElements(user, bookings);
-  $customerBookingsHistoryList.html(customerBookingHistoryListElements)
-  populateRoomsCustomerDay(user, bookings, date)
-  $('.section__rooms--customer-bookings-history, .section__rooms--customer-booking-today').removeClass('hidden')
-  
+  $customerBookingsHistoryList.html(customerBookingHistoryListElements);
+  populateRoomsCustomerDay(user, bookings, date);
+  unhideCustomerSections();
+}
+
+function unhideCustomerSections() {
+  $('.section__rooms--customer-bookings-history').removeClass('hidden');
+  $('.section__rooms--customer-booking-today').removeClass('hidden');
 }
 
 function populateRoomsCustomerDay(user, bookings, date) {
   let todaysBooking = user.returnBookingForDay(bookings, date);
   if (todaysBooking) {
-    $('.section__rooms--customer-booking-today button').addClass('hidden');
+    $('.section__rooms--customer-booking-today button').eq(0).addClass('hidden');
     let room = hotel.returnTodaysBookedRooms(date).find(room => room.number === todaysBooking.roomNumber)
     $customerBookingTodaySpan.html(`
       <ul>
@@ -285,11 +293,14 @@ function populateRoomsCustomerDay(user, bookings, date) {
         <li>Number of Beds: ${room.numBeds}</li>
         <li>Cost Per Night: $${room.costPerNight}</li>
       </ul>`);
+      $newRoomServiceOrderButton.removeClass('hidden');
   } else {
     $customerBookingTodaySpan.text('No bookings for today');
-    $('.section__rooms--customer-booking-today button').removeClass('hidden');
+    $newRoomServiceOrderButton.addClass('hidden');
+    $('.section__rooms--customer-booking-today button').eq(0).removeClass('hidden');
   }
 }
+
 
 function generateBookingHistoryListElements(user, bookings) {
   let allCustomerBookings = user.returnAllBookings(bookings);
@@ -327,8 +338,9 @@ function populateGeneralizedInfo() {
 $('header h3 span:nth-of-type(2)').click(function() {
   populateGeneralizedInfo();
   $('.section__orders--customer').addClass('hidden');
-  $('.section__rooms--customer-bookings-history').addClass('hidden')
-  
+  $('.section__rooms--customer-bookings-history').addClass('hidden');
+  $('.section__rooms--customer-booking-today').addClass('hidden');
+  $('.section__rooms--new-booking').addClass('hidden');
 })
 
 $navRoomsTab.click(function() {
@@ -358,6 +370,12 @@ function removeSelectedClass() {
   })
 }
 
+$newRoomServiceOrderButton.click(function(e) {
+  e.preventDefault();
+  //show menu with buttons to order food
+  console.log('pop up new menu')
+})
+
 function unhideSelectedSection(selectedSection) {
   selectedSection.addClass('selected').removeClass('hidden')
   hideSections(selectedSection)
@@ -370,6 +388,12 @@ function hideSections (selectedSection) {
     }
   })
 }
+
+$('.section__rooms--customer-booking-today button').eq(0).click(function(e) {
+  e.preventDefault();
+  $('.section__rooms--new-booking, .section__rooms--new-booking--available-rooms').removeClass('hidden');
+})
+
 
 $('.section__customers--new-customer button').click(function(e) {
   e.preventDefault();
