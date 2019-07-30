@@ -74,7 +74,6 @@ $submitRoomServiceOrderButton.on('click', function(e) {
   populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
 })
 
-
 $roomServiceMenuDiv.on('click', function(e) {
   let menuItem = e.target.closest('li');
   menuItem.classList.toggle('clicked');
@@ -117,10 +116,6 @@ $filterAllRoomsButton.on('click', function(e) {
   $availableRoomsDiv.html(populateAvailableRooms(hotel.returnTodaysUnbookedRooms(hotel.currentDate)))
 })
 
-
-
-
-
 Promise.all([usersFetch, bookingsFetch, roomServicesFetch, roomsFetch])
   .then(values => Promise.all(values.map(value => value.json())))
   .then(results => {
@@ -128,9 +123,7 @@ Promise.all([usersFetch, bookingsFetch, roomServicesFetch, roomsFetch])
     let rooms = results.find(data => data.hasOwnProperty('rooms')).rooms;
     let bookings = results.find(data => data.hasOwnProperty('bookings')).bookings;
     let roomServices = results.find(data => data.hasOwnProperty('roomServices')).roomServices;
-
     hotel = new Hotel(users, bookings, roomServices, rooms, date);
-
     console.log(hotel)
   });
 
@@ -150,7 +143,6 @@ setTimeout(function () {
   $('.section__main--general--content').removeClass('hidden')
   $('.section__main--general--loading').addClass('hidden');
   populateItemsPageLoad();
-
 },3000)
 
 function populateMenu() {
@@ -158,16 +150,14 @@ function populateMenu() {
     let menuItem = {food: service.food, totalCost: service.totalCost};
     return menuItem;
   })
-  menu = [...new Set(menu)]
+  menu = [...new Set(menu)].slice(0, 9)
   let menuElements = menu.reduce((acc, item) => {
-    acc += `<li data-food="${item.food}" data-price=${item.totalCost}>${item.food}: ${item.totalCost}</li>`
+    acc += `<li data-food="${item.food}" data-price=${item.totalCost}>${item.food}: $${item.totalCost}</li>`
     return acc;
   }, `<ul>`)
   menuElements += `</ul>`
   $roomServiceMenuDiv.html(menuElements)
 }
-
-
 
 function populateItemsPageLoad() {
   $mostPopularBookingDateSpan.text(hotel.returnMostPopularBookingDate().date)
@@ -214,7 +204,8 @@ function loadAutocompleteSearch() {
 
 $('.ui-autocomplete-input').focus(function() {
   $('.ui-autocomplete-input').val('');
-  $('.header__search--error').addClass('hidden')
+  $('.header__search--error').addClass('hidden');
+  $roomServiceMenuSection.addClass('hidden');
 })
 
 $('#header__search~button').click(function(e) {
@@ -414,7 +405,7 @@ function removeSelectedClass() {
 
 $newRoomServiceOrderButton.click(function(e) {
   e.preventDefault();
-  $roomServiceMenuSection.removeClass('hidden');
+  $roomServiceMenuSection.toggleClass('hidden');
 })
 
 function unhideSelectedSection(selectedSection) {

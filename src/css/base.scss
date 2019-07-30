@@ -145,6 +145,8 @@ nav {
   @include section-styles($main-color)
 }
 
+
+
 .section__rooms {
   @include section-styles($rooms-color)
 }
@@ -241,6 +243,24 @@ nav {
   & h3 {
     @include widget-heading($customers-color)
   }
+
+  & h4 {
+    margin: 20px;
+  }
+
+  & form {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    width: 80%;
+    margin: 20px auto;
+
+    & button {
+      background: $customers-color;
+      color: #ffffff;
+      font-size: 14px;
+    }
+  }
 }
 
 .section__customers--general {
@@ -301,6 +321,65 @@ nav {
     }
 }
 
+.section__rooms--new-booking {
+  @include widget-styles($rooms-color)
+  position: absolute;
+  z-index: 100;
+  width: 83%;
+  height: 60%;
+  overflow: scroll;
+  background: #ffffff;
+  margin: auto;
+
+  & h3 {
+    @include widget-heading($rooms-color)
+  }
+
+  & ul {
+
+  }
+
+  .section__rooms--new-booking--available-rooms {
+    display: flex;
+    flex-flow: row wrap;
+    
+
+    & div {
+      @include widget-styles($rooms-color)
+      width: 200px;
+      margin: 10px;
+      border: 2px solid $rooms-color;
+
+      & p {
+        padding: 10px;
+      }
+
+      & h5 {
+        @include widget-heading($rooms-color)
+      }
+    }
+  }
+}
+
+.section__rooms--customer-bookings-history,
+.section__rooms--customer-booking-today {
+  @include widget-styles($rooms-color)
+
+  & h3 {
+    @include widget-heading($rooms-color)
+  }
+
+  & span {
+    display: block;
+    padding: 10px;
+  }
+
+  & div {
+   margin: 0 70px;;
+  }
+
+}
+
 
 .section__orders--customer {
   @include widget-styles($orders-color);
@@ -325,12 +404,49 @@ nav {
   margin: 20px 0 20px 0;
 }
 
-.section__rooms--new-room-service-order li:hover {
-  background: $rooms-color;
-  cursor: pointer;
+.section__rooms--new-room-service-order {
+  @include widget-styles($rooms-color)
+  
+  & h3 {
+    @include widget-heading($rooms-color)
+  }
+
+  & ul {
+    padding: 10px;
+  }
+
+  & li {
+  list-style: none;
+  margin: 0;
+  font-size: 12px;
+  }
+
+  & button {
+    margin: auto;
+  }
+
+  & li:hover {
+    background: $rooms-color;
+    cursor: pointer;
+  }
+
+  & div {
+    overflow: scroll;
+  }
 }
 
 .clicked {
   background: $rooms-color;
 
 }
+
+.section__main--general--content {
+  @include widget-styles($main-color)
+  & h2 {
+    @include widget-heading($main-color)
+  }
+  & h3 {
+    margin: 10px;
+  }
+}
+
