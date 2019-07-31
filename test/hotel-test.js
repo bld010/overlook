@@ -1,7 +1,7 @@
-import bookingsData from '../data/bookings-data.js';
-import roomsData from '../data/rooms-data.js';
-import usersData from '../data/users-data.js';
-import roomServicesData from '../data/roomServices-data.js'
+import bookingsData from './mock-data/bookings-data.js';
+import roomsData from './mock-data/rooms-data.js';
+import usersData from './mock-data/users-data.js';
+import roomServicesData from './mock-data/roomServices-data.js'
 import Hotel from '../src/Hotel.js'
 
 import chai from 'chai';

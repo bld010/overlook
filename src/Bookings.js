@@ -19,10 +19,6 @@ class Bookings {
     hotel.bookings.splice(index, 1)
   }
 
-  // returnRoomCharge(hotel) {
-  //   return hotel.rooms.find(room.roomNumber === this.roomNumber).costPerNight
-  // }
-
 }
 
 export default Bookings;
