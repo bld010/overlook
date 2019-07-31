@@ -1,7 +1,7 @@
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 import 'jquery-ui/ui/widgets/autocomplete';
-import 'jquery-ui/ui/widgets/datepicker';
+import datepicker from 'js-datepicker'
 import './css/base.scss';
 import Hotel from './Hotel.js';
 import Customer from './Customer.js'
@@ -180,8 +180,10 @@ function populateOrdersTableElements(charges, revenue, $tableElement) {
 
 // orders datepicker
 
+const picker = datepicker('#datepicker')
+
 $(function () {
-  $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
+  picker.datepicker({ dateFormat: 'yy-mm-dd' });
 });
 
 $datePickerButton.click(function(e) {
@@ -199,10 +201,6 @@ $datePickerButton.click(function(e) {
 $('#datepicker').on('focus', function() {
   $roomServiceMenuSection.addClass('hidden');
 })
-
-$('#datepicker').datepicker({
-  dateFormat: 'yy-mm-dd'
-});
 
 // search
 
