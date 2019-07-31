@@ -5,9 +5,9 @@
 
 class Bookings {
   constructor(bookingObject) {
-      this.userID = bookingObject.userID;
-      this.date = bookingObject.date;
-      this.roomNumber = bookingObject.roomNumber;
+    this.userID = bookingObject.userID;
+    this.date = bookingObject.date;
+    this.roomNumber = bookingObject.roomNumber;
   }
 
   addToBookingsList(hotel) {

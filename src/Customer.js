@@ -36,15 +36,13 @@ class Customer {
 
   returnAllTimeRoomServiceDollars(roomServices) {
     let allServices = this.returnAllRoomServices(roomServices);
-    console.log(allServices)
     if (allServices.length) {
       let totalRoomServiceDollars = allServices.reduce((acc, charge) => {
         acc += charge.totalCost
         return acc
       }, 0).toFixed(2)
       return totalRoomServiceDollars;
-    }
-    else {
+    } else {
       return 0
     }
   }

@@ -456,7 +456,7 @@ $roomServiceMenuDiv.on('click', function(e) {
 $availableRoomsDiv.on('click', function(e) {
   if (e.target.classList.contains('book-room-button')) {
     let roomNumber = parseInt(e.target.closest('div').dataset.roomnumber);
-    let bookingObject = {'userID': hotel.customerSelected.id, 'date': hotel.currentDate, 'roomNumber': roomNumber}
+    let bookingObject = {'userID': hotel.customerSelected.id, 'date': hotel.currentDate, roomNumber}
     let newBooking = new Bookings(bookingObject)
     hotel.bookings.unshift(newBooking)
     $('.section__rooms--new-booking, .section__rooms--new-booking--available-rooms').addClass('hidden');

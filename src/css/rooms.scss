@@ -23,7 +23,7 @@
   position: absolute;
   z-index: 100;
   width: 83%;
-  height: 60%;
+  height: 550px;
   overflow: scroll;
   background: #ffffff;
   margin: auto;
@@ -32,8 +32,13 @@
     @include widget-heading($rooms-color)
   }
 
-  & ul {
-
+  & h4 {
+    margin-left: 20px;
+  }
+  
+  & button {
+    margin-left: 20px;
+    font-size: 14px;
   }
 
   .section__rooms--new-booking--available-rooms {
@@ -53,6 +58,10 @@
 
       & h5 {
         @include widget-heading($rooms-color)
+      }
+
+      & button {
+        margin-left: 80px;
       }
     }
   }
@@ -74,13 +83,7 @@
   & div {
    margin: 0 70px;;
   }
-
 }
-
-
-
-
-
 
 .section__rooms--new-room-service-order {
   @include widget-styles($rooms-color)
@@ -100,7 +103,7 @@
   }
 
   & button {
-    margin: auto;
+    margin-left: 80px;
   }
 
   & li:hover {
