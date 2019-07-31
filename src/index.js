@@ -182,13 +182,37 @@ function populateOrdersTableElements(charges, revenue, $tableElement) {
 
 const picker = datepicker('#datepicker')
 
-$(function () {
-  picker.datepicker({ dateFormat: 'yy-mm-dd' });
-});
+// function fixDateFormat(dateString)
+
+
+
+function fixDateFormat(dateString) {
+  var months = {
+    'Jan' : '01',
+    'Feb' : '02',
+    'Mar' : '03',
+    'Apr' : '04',
+    'May' : '05',
+    'Jun' : '06',
+    'Jul' : '07',
+    'Aug' : '08',
+    'Sep' : '09',
+    'Oct' : '10',
+    'Nov' : '11',
+    'Dec' : '12'
+  }
+
+  let dateParts = dateString.split(' ').slice(1,4)
+  dateParts[0] = months[dateParts[0]]
+  let date = [dateParts[2], dateParts[0], dateParts[1]]
+  return date.join('/');
+}
 
 $datePickerButton.click(function(e) {
   e.preventDefault();
-  hotel.currentDate = $('#datepicker').val().split('-').join('/');
+  
+  
+  hotel.currentDate = fixDateFormat($('#datepicker').val())
   populateItemsPageLoad();
   populateOrdersTableElements(hotel.returnTodaysRoomServicesCharges(hotel.currentDate),
   hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
