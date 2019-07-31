@@ -10,11 +10,12 @@ const expect = chai.expect;
 chai.use(spies);
 
 let hotel = null;
+let date = "2019/09/22"
 
 describe('Hotel', function() {
 
   beforeEach(() => {
-    hotel = new Hotel()
+    hotel = new Hotel(usersData.users, bookingsData.bookings, roomServicesData.roomServices, roomsData.rooms, date)
   })
 
   it('should be an instance of Hotel', () => {
@@ -73,6 +74,21 @@ describe('Hotel', function() {
 
   it('should calculate total revenue for a given day', () => {
     expect(hotel.returnTodaysTotalRevenue("2019/10/28")).to.equal(8036.92)
+  })
+
+  it('should return the most popular booking date', () => {
+    expect(hotel.returnMostPopularBookingDate().date).to.equal('2019/10/28')
+  })
+
+  it('should return the least popular booking date', () => {
+    expect(hotel.returnLeastPopularBookingDate().date).to.equal('2019/07/23')
+  })
+
+  it('should filter available rooms by type for a given date', () => {
+    expect(hotel.filterAvailableRooms('2019/07/31', 'single room').length).to.equal(10);
+    expect(hotel.filterAvailableRooms('2019/07/31', 'residential suite').length).to.equal(4);
+    expect(hotel.filterAvailableRooms('2019/07/31', 'junior suite').length).to.equal(6);
+    expect(hotel.filterAvailableRooms('2019/07/31', 'suite').length).to.equal(4)
   })
 
 })
