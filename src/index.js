@@ -146,6 +146,7 @@ function populateAvailableRooms(availableRooms) {
 }
 
 function populateOrdersTableElements(charges, revenue, $tableElement) {
+  console.log(charges, revenue, $tableElement)
   let chargesTableElements = `<table>
     <thead>
       <tr>
@@ -209,12 +210,9 @@ function fixDateFormat(dateString) {
 
 $datePickerButton.click(function(e) {
   e.preventDefault();
-  
-  
   hotel.currentDate = fixDateFormat($('#datepicker').val())
   populateItemsPageLoad();
-  populateOrdersTableElements(hotel.returnTodaysRoomServicesCharges(hotel.currentDate),
-  hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
+  populateOrdersTableElements(hotel.returnTodaysRoomServicesCharges(hotel.currentDate), hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
   if (hotel.customerSelected) {
     populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
   } 
@@ -324,9 +322,9 @@ function generateBookingHistoryListElements(user, bookings) {
 
 function populateOrdersCustomerInfo(user, roomServices, date) {
   let userDayCharges = user.returnChargesForDay(roomServices, date);
-  let table = populateOrdersTableElements(user.returnChargesForDay(roomServices, date), 
-    user.returnAllTimeRoomServiceDollars(roomServices), $customerOrderTable);
+  let table = populateOrdersTableElements(user.returnAllRoomServices(roomServices), user.returnAllTimeRoomServiceDollars(roomServices), $customerOrderTable);
   populateCustomerDayOrder(user, roomServices, date);
+
 }
 
 function populateCustomerDayOrder(user, roomServices, date) {

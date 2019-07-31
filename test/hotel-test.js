@@ -91,4 +91,10 @@ describe('Hotel', function() {
     expect(hotel.filterAvailableRooms('2019/07/31', 'suite').length).to.equal(4)
   })
 
+  it('should create a new customer and store it', () => {
+    let usersLength = hotel.users.length;
+    hotel.createNewCustomer({id: 12, name: "Robbie"})
+    expect(hotel.users.length).to.equal(usersLength + 1);
+  })
+
 })
