@@ -30,7 +30,28 @@ describe('Customer', function() {
   })
 
   it('should return a customer\'s room service history', () => {
-    
+    let customer2 = new Customer({id: 100, name: 'Riley Mann'})
+    let services = roomServicesData.roomServices.slice();
+    expect(customer2.returnAllRoomServices(services).length).to.equal(1)
   })
+
+  it('should return charges for a given day', () => {
+    let customer2 = new Customer({id: 100, name: 'Riley Mann'})
+    let services = roomServicesData.roomServices.slice();
+    expect(customer2.returnTotalForDay(services, '2019/10/18')).to.equal('17.33')
+  })
+
+  it('should return a customers charges for a given day', () => {
+    let customer2 = new Customer({id: 100, name: 'Riley Mann'})
+    let services = roomServicesData.roomServices.slice();
+    expect(customer2.returnChargesForDay(services, '2019/10/18').length).to.equal(1)
+})
+
+  it('should return all time service revenue for a given customer', () => {
+    let customer3 = new Customer({id: 13,name: "Cleveland Schimmel"})
+    let services = roomServicesData.roomServices.slice();
+    expect(customer3.returnAllTimeRoomServiceDollars(services)).to.equal('35.11')
+  })
+
 
 })
