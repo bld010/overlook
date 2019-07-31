@@ -45,7 +45,7 @@ let $roomsSection = $('.section__rooms');
 let $mainSection = $('.section__main');
 let $ordersSection = $('.section__orders');
 let $customersSection = $('.section__customers');
-let $customerBookingTodaySpan =  $('.section__rooms--customer-booking-today span')
+let $customerBookingTodaySpan =  $('.section__rooms--customer-booking-today span');
 let $customerBookingsHistoryList = $('.section__rooms--customer-bookings-history ul');
 let sections = [$mainSection, $ordersSection, $roomsSection, $customersSection]
 let $datepicker = ('#datepicker');
@@ -56,65 +56,17 @@ let $filterJuniorSuitesButton = $('.section__rooms--filter-junior-suites');
 let $filterSingleRoomsButton = $('.section__rooms--filter-single-rooms');
 let $filterAllRoomsButton = $('.section__rooms--filter-all-rooms');
 let $newRoomServiceOrderButton = $('.new-room-service-order');
-let $roomServiceMenuSection = $('.section__rooms--new-room-service-order')
-let $roomServiceMenuDiv = $('.section__rooms--new-room-service-order div')
+let $roomServiceMenuSection = $('.section__rooms--new-room-service-order');
+let $roomServiceMenuDiv = $('.section__rooms--new-room-service-order div');
 let $submitRoomServiceOrderButton = $('.section__rooms--new-room-service-order button');
+let $makeBookingButton = $('.section__rooms--customer-booking-today button').eq(0);
+let $newCustomerButton = $('.section__customers--new-customer button');
+let $clearUserButton = $('header h3 span:nth-of-type(2)');
 
 
 $('.section__main--general--content').addClass('hidden')
 
-$submitRoomServiceOrderButton.on('click', function(e) {
-  let items = [...$('.section__rooms--new-room-service-order div li.clicked')]
-  items.forEach(item => {
-    let food = item.dataset.food;
-    let price = parseFloat(item.dataset.price);
-    hotel.roomServices.push(new RoomServices(hotel.customerSelected.id, hotel.currentDate, food, price))
-  });
-  $roomServiceMenuSection.addClass('hidden');
-  populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
-})
 
-$roomServiceMenuDiv.on('click', function(e) {
-  let menuItem = e.target.closest('li');
-  menuItem.classList.toggle('clicked');
-})
-
-$availableRoomsDiv.on('click', function(e) {
-  if (e.target.classList.contains('book-room-button')) {
-    let roomNumber = parseInt(e.target.closest('div').dataset.roomnumber);
-    let bookingObject = {'userID': hotel.customerSelected.id, 'date': hotel.currentDate, 'roomNumber': roomNumber}
-    let newBooking = new Bookings(bookingObject)
-    hotel.bookings.unshift(newBooking)
-    console.log(hotel.bookings[0])
-    $('.section__rooms--new-booking, .section__rooms--new-booking--available-rooms').addClass('hidden');
-    populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
-  }
-})
-
-$filterSuitesButton.on('click', function(e) {
-  e.preventDefault();
-  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "suite")))
-})
-
-$filterResidentialSuitesButton.on('click', function(e) {
-  e.preventDefault();
-  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "residential suite")))
-})
-
-$filterJuniorSuitesButton.on('click', function(e) {
-  e.preventDefault();
-  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "junior suite")))
-})
-
-$filterSingleRoomsButton.on('click', function(e) {
-  e.preventDefault();
-  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "single room")))
-})
-
-$filterAllRoomsButton.on('click', function(e) {
-  e.preventDefault();
-  $availableRoomsDiv.html(populateAvailableRooms(hotel.returnTodaysUnbookedRooms(hotel.currentDate)))
-})
 
 Promise.all([usersFetch, bookingsFetch, roomServicesFetch, roomsFetch])
   .then(values => Promise.all(values.map(value => value.json())))
@@ -183,7 +135,7 @@ function populateItemsPageLoad() {
 
 function populateAvailableRooms(availableRooms) {
   let bookingsElements = availableRooms.reduce((acc, room) => {
-    acc += `<div class="room" data-roomNumber="${room.number}"><h5>Room ${room.number}</h5>`
+    acc += `<div class="room" tabindex=0 data-roomNumber="${room.number}"><h5>Room ${room.number}</h5>`
     acc += `<p>Type: ${room.roomType}</p>`
     acc +=`<p>Number of Beds: ${room.numBeds}</p>`
     acc += `<p>Bed Size: ${room.bedSize}</p>`
@@ -193,26 +145,6 @@ function populateAvailableRooms(availableRooms) {
   }, '')
   return bookingsElements;
 }
-
-// search
-
-function loadAutocompleteSearch() {
-  $( '#header__search').autocomplete({
-    source: hotel.users.map(user => user.name)
-  });
-}
-
-$('#header__search').on('click', function() {
-  $('input #header__search').val('');
-  $('.header__search--error').addClass('hidden');
-  $roomServiceMenuSection.addClass('hidden');
-  console.log('hidden')
-})
-
-$('#header__search~button').click(function(e) {
-  e.preventDefault();
-  handleCustomerSearch();
-})
 
 function populateOrdersTableElements(charges, revenue, $tableElement) {
   let chargesTableElements = `<table>
@@ -246,10 +178,7 @@ function populateOrdersTableElements(charges, revenue, $tableElement) {
   $tableElement.html(chargesTableElements)
 }
 
-
-
 // orders datepicker
-
 
 $(function () {
   $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
@@ -270,6 +199,26 @@ $('#datepicker').datepicker({
   dateFormat: 'yy-mm-dd'
 });
 
+// search
+
+function loadAutocompleteSearch() {
+  $( '#header__search').autocomplete({
+    source: hotel.users.map(user => user.name)
+  });
+}
+
+$('#header__search').on('click', function() {
+  $('input #header__search').val('');
+  $('.header__search--error').addClass('hidden');
+  $roomServiceMenuSection.addClass('hidden');
+})
+
+$('#header__search~button').click(function(e) {
+  e.preventDefault();
+  handleCustomerSearch();
+})
+
+
 function handleCustomerSearch() {
   let searchInput = $('.ui-autocomplete-input').val();
   $('.ui-autocomplete-input').val('');
@@ -281,6 +230,8 @@ function handleCustomerSearch() {
     populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
   }
 }
+
+// other functions
 
 function updateShowingDetailsSpan (user) {
   $('header h3 span:nth-of-type(1)').text(user.name)
@@ -325,14 +276,13 @@ function populateRoomsCustomerDay(user, bookings, date) {
         <li>Number of Beds: ${room.numBeds}</li>
         <li>Cost Per Night: $${room.costPerNight}</li>
       </ul>`);
-      $newRoomServiceOrderButton.removeClass('hidden');
+    $newRoomServiceOrderButton.removeClass('hidden');
   } else {
     $customerBookingTodaySpan.text('No bookings for today');
     $newRoomServiceOrderButton.addClass('hidden');
     $('.section__rooms--customer-booking-today button').eq(0).removeClass('hidden');
   }
 }
-
 
 function generateBookingHistoryListElements(user, bookings) {
   let allCustomerBookings = user.returnAllBookings(bookings);
@@ -369,50 +319,6 @@ function populateGeneralizedInfo() {
   populateItemsPageLoad();
 }
 
-$('header h3 span:nth-of-type(2)').click(function() {
-  populateGeneralizedInfo();
-  $('.section__orders--customer').addClass('hidden');
-  $('.section__rooms--customer-bookings-history').addClass('hidden');
-  $('.section__rooms--customer-booking-today').addClass('hidden');
-  $('.section__rooms--new-booking').addClass('hidden');
-})
-
-$navRoomsTab.click(function() {
-  handleSectionToggling($roomsSection)
-})
-
-$navRoomsTab.on('keydown', function(e) {
-    if(e.which==13 || e.which==32)
-        $(this).click()
-});
-
-$navCustomersTab.click(function() {
-  handleSectionToggling($customersSection)
-})
-
-$navCustomersTab.on('keydown', function(e) {
-  if(e.which==13 || e.which==32)
-      $(this).click()
-});
-
-$navMainTab.click(function () {
-  handleSectionToggling($mainSection)
-})
-
-$navMainTab.on('keydown', function(e) {
-  if(e.which==13 || e.which==32)
-      $(this).click()
-});
-
-$navOrdersTab.click(function () {
-  handleSectionToggling($ordersSection)
-})
-
-$navOrdersTab.on('keydown', function(e) {
-  if(e.which==13 || e.which==32)
-      $(this).click()
-});
-
 function handleSectionToggling(selectedSection) {
   removeSelectedClass();
   unhideSelectedSection(selectedSection)
@@ -423,11 +329,6 @@ function removeSelectedClass() {
     section.removeClass('selected');
   })
 }
-
-$newRoomServiceOrderButton.click(function(e) {
-  e.preventDefault();
-  $roomServiceMenuSection.toggleClass('hidden');
-})
 
 function unhideSelectedSection(selectedSection) {
   selectedSection.addClass('selected').removeClass('hidden')
@@ -442,13 +343,68 @@ function hideSections (selectedSection) {
   })
 }
 
-$('.section__rooms--customer-booking-today button').eq(0).click(function(e) {
+// event listeners
+
+$clearUserButton.click(function(e) {
+  e.preventDefault();
+  populateGeneralizedInfo();
+  $('.section__orders--customer').addClass('hidden');
+  $('.section__rooms--customer-bookings-history').addClass('hidden');
+  $('.section__rooms--customer-booking-today').addClass('hidden');
+  $('.section__rooms--new-booking').addClass('hidden');
+})
+
+$navRoomsTab.click(function() {
+  handleSectionToggling($roomsSection)
+})
+
+$navRoomsTab.on('keydown', function(e) {
+  if (e.which==13 || e.which==32) {
+    $(this).click()
+  }
+});
+
+$navCustomersTab.click(function() {
+  handleSectionToggling($customersSection)
+})
+
+$navCustomersTab.on('keydown', function(e) {
+  if (e.which==13 || e.which==32) {
+    $(this).click()
+  }
+});
+
+$navMainTab.click(function () {
+  handleSectionToggling($mainSection)
+})
+
+$navMainTab.on('keydown', function(e) {
+  if (e.which==13 || e.which==32) {
+    $(this).click()
+  }
+});
+
+$navOrdersTab.click(function () {
+  handleSectionToggling($ordersSection)
+})
+
+$navOrdersTab.on('keydown', function(e) {
+  if (e.which==13 || e.which==32) {
+    $(this).click()
+  }
+});
+
+$newRoomServiceOrderButton.click(function(e) {
+  e.preventDefault();
+  $roomServiceMenuSection.toggleClass('hidden');
+})
+
+$makeBookingButton.click(function(e) {
   e.preventDefault();
   $('.section__rooms--new-booking, .section__rooms--new-booking--available-rooms').removeClass('hidden');
 })
 
-
-$('.section__customers--new-customer button').click(function(e) {
+$newCustomerButton.click(function(e) {
   e.preventDefault();
   let newCustomerName = $('#new-customer-name-input').val();
   domUpdates.createNewCustomer(hotel, {id: hotel.users.length + 1, name: `${newCustomerName}`})
@@ -458,4 +414,58 @@ $('.section__customers--new-customer button').click(function(e) {
   loadAutocompleteSearch()
   $('.header__search--error').addClass('hidden');
 })
+
+$submitRoomServiceOrderButton.on('click', function(e) {
+  let items = [...$('.section__rooms--new-room-service-order div li.clicked')]
+  items.forEach(item => {
+    let food = item.dataset.food;
+    let price = parseFloat(item.dataset.price);
+    hotel.roomServices.push(new RoomServices(hotel.customerSelected.id, hotel.currentDate, food, price))
+  });
+  $roomServiceMenuSection.addClass('hidden');
+  populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
+})
+
+$roomServiceMenuDiv.on('click', function(e) {
+  let menuItem = e.target.closest('li');
+  menuItem.classList.toggle('clicked');
+})
+
+$availableRoomsDiv.on('click', function(e) {
+  if (e.target.classList.contains('book-room-button')) {
+    let roomNumber = parseInt(e.target.closest('div').dataset.roomnumber);
+    let bookingObject = {'userID': hotel.customerSelected.id, 'date': hotel.currentDate, 'roomNumber': roomNumber}
+    let newBooking = new Bookings(bookingObject)
+    hotel.bookings.unshift(newBooking)
+    console.log(hotel.bookings[0])
+    $('.section__rooms--new-booking, .section__rooms--new-booking--available-rooms').addClass('hidden');
+    populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
+  }
+})
+
+$filterSuitesButton.on('click', function(e) {
+  e.preventDefault();
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "suite")))
+})
+
+$filterResidentialSuitesButton.on('click', function(e) {
+  e.preventDefault();
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "residential suite")))
+})
+
+$filterJuniorSuitesButton.on('click', function(e) {
+  e.preventDefault();
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "junior suite")))
+})
+
+$filterSingleRoomsButton.on('click', function(e) {
+  e.preventDefault();
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.filterAvailableRooms(hotel.currentDate, "single room")))
+})
+
+$filterAllRoomsButton.on('click', function(e) {
+  e.preventDefault();
+  $availableRoomsDiv.html(populateAvailableRooms(hotel.returnTodaysUnbookedRooms(hotel.currentDate)))
+})
+
 

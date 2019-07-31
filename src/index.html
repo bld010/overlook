@@ -7,12 +7,12 @@
   <body>
     <header>
       <h1>Overlook</h1>
-      <h3>Showing Details for: <span>All Customers</span><span class="hidden">[Clear User]</span></h3>
+      <h3>Showing Details for: <span>All Customers</span><span tabindex=0 role="button" class="hidden">[Clear User]</span></h3>
       <div class="header__forms">
         <form>
           <label for="header__search">Customer Search</label>
           <input placeholder="Customer Name" id="header__search">
-          <button>Search</button>
+          <button>Search for Customer</button>
           <div class="header__search--error hidden">
             <p>No results. Try again or add new customers on Customer Tab</p>  
           </div>
@@ -20,24 +20,24 @@
         <form>
           <label for="datepicker">Date Search</label>
           <input placeholder="Choose a Date" id="datepicker">
-          <button>Search</button>
+          <button>Search by Date</button>
         </form>
       </div>
     </header>
       <nav>
         <ul>
-          <li tabindex=0 class="nav__main">Main</li>
-          <li tabindex=0 class="nav__rooms disabled">Rooms</li>
-          <li tabindex=0 class="nav__customers">Customers</li>
-          <li tabindex=0 class="nav__orders disabled">Orders</li>
+          <li tabindex=0 role="button" class="nav__main">Main</li>
+          <li tabindex=0 role="button" class="nav__rooms disabled">Rooms</li>
+          <li tabindex=0 role="button" class="nav__customers">Customers</li>
+          <li tabindex=0 role="button" class="nav__orders disabled">Orders</li>
         </ul>
       </nav>
-    <section class="section__main">
-      <article class="section__main--general">
+    <section tabindex="0" class="section__main">
+      <article tabindex=0 class="section__main--general">
           <div class="section__main--general--loading">
             <img src="./images/loading-spinner.gif">
           </div>
-          <div class="section__main--general--content">
+          <div tabindex=0 class="section__main--general--content">
             <h2>Today's Date: <span></span></h2>
             <h3>Occupancy: <span></span></h3>
             <h3>Available Rooms: <span></span></h3>
@@ -55,19 +55,19 @@
           </div>
       </article>
     </section>
-    </section>
-    <section class="section__rooms hidden">
-      <article class="section__rooms--general">
+
+    <section tabindex=0 class="section__rooms hidden">
+      <article tabindex=0 class="section__rooms--general">
         <h3>Most Popular Booking Date: </h3>
         <p><span>[Date]</span> (<span>0</span> bookings)</p>
         <h3>Most Rooms Available On: </h3>
         <p><span>[Date]</span> (<span>0</span> rooms available)</p>
       </article>
-      <article class="section__rooms--customer-bookings-history hidden">
+      <article tabindex=0 class="section__rooms--customer-bookings-history hidden">
         <h3>User's Booking History</h3>
         <ul></ul>
       </article>
-      <article class="section__rooms--customer-booking-today hidden">
+      <article tabindex=0 class="section__rooms--customer-booking-today hidden">
         <h3>User's Booking for Today</h3>
         <span></span>
         <div>
@@ -75,14 +75,14 @@
           <button class="new-room-service-order hidden">New Room Service Order</button>
         </div>
       </article>
-      <article class="section__rooms--new-room-service-order hidden">
+      <article tabindex=0 class="section__rooms--new-room-service-order hidden">
         <h3>Select Room Service Items</h3>
         <div>
           Menu
         </div>
         <button>Submit Order</button>
       </article>
-      <article class="section__rooms--new-booking hidden">
+      <article tabindex=0 class="section__rooms--new-booking hidden">
         <h3>Make a New Booking</h3> 
         <div>
           <button class="section__rooms--filter-all-rooms">All Available Rooms</button>
@@ -96,9 +96,9 @@
         </div>
       </article>
     </section>
-    <section class="section__customers hidden">
-      <article class="section__customers--general">
-        <fdiv class="section__customers--new-customer">
+    <section tabindex=0 class="section__customers hidden">
+      <article tabindex=0 class="section__customers--general">
+        <div class="section__customers--new-customer">
           <h3>Add a New Customer</h3>
           <form>
             <label for="new-customer-name-input">Enter New Customer's Name</label>
@@ -107,18 +107,18 @@
           </form>
         </div>
       </article>
-      <article class="section__customers--select-customer-prompt">
+      <article tabindex=0 class="section__customers--select-customer-prompt">
           <h3>No Customer Selected</h3>
           <h4>Search for one in the top right corner or add one (left).</h4>
       </article>
     </section>
-    <section class="section__orders hidden">
-      <article class="section__orders--general">
+    <section tabindex=0 class="section__orders hidden">
+      <article tabindex=0 class="section__orders--general">
         <h3>Today's Room Service Orders: </h3>
         <div class="section__orders--general--table"> 
         </div>
       </article>
-      <article class="section__orders--customer hidden">
+      <article tabindex=0 class="section__orders--customer hidden">
         <h3>Customer's Room Service History: </h3>
         <div class="section__orders--customer--table"></div>
         <h3>Customer's Total Charge Today:</h3>
