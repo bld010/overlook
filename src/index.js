@@ -104,7 +104,7 @@ function populateMenu() {
   })
   menu = [...new Set(menu)].slice(0, 9)
   let menuElements = menu.reduce((acc, item) => {
-    acc += `<li data-food="${item.food}" data-price=${item.totalCost}>${item.food}: $${item.totalCost}</li>`
+    acc += `<li tabindex=0 data-food="${item.food}" data-price=${item.totalCost}>${item.food}: $${item.totalCost}</li>`
     return acc;
   }, `<ul>`)
   menuElements += `</ul>`
@@ -190,9 +190,14 @@ $datePickerButton.click(function(e) {
   populateItemsPageLoad();
   populateOrdersTableElements(hotel.returnTodaysRoomServicesCharges(hotel.currentDate),
   hotel.returnTodaysRoomServicesRevenue(hotel.currentDate), $generalOrderTable);
+
   if (hotel.customerSelected) {
     populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
   } 
+})
+
+$('#datepicker').on('focus', function() {
+  $roomServiceMenuSection.addClass('hidden');
 })
 
 $('#datepicker').datepicker({
@@ -390,7 +395,7 @@ $navOrdersTab.click(function () {
 
 $navOrdersTab.on('keydown', function(e) {
   if (e.which==13 || e.which==32) {
-    $(this).click()
+    $(this).click();
   }
 });
 
@@ -427,8 +432,15 @@ $submitRoomServiceOrderButton.on('click', function(e) {
 })
 
 $roomServiceMenuDiv.on('click', function(e) {
+  e.preventDefault();
   let menuItem = e.target.closest('li');
   menuItem.classList.toggle('clicked');
+})
+
+$roomServiceMenuDiv.on('keydown', function(e) {
+  if (e.which==13 || e.which==32) {
+    e.target.closest('li').classList.toggle('clicked');
+  }
 })
 
 $availableRoomsDiv.on('click', function(e) {

@@ -17,7 +17,7 @@ $display-font: 'Roboto', sans-serif;
 @mixin widget-styles($color) {
   margin:0px 30px 30px 0px;
   border: 2px solid $color;
-  width: 300px;
+  width: 270px;
   min-height: 320px;
   border-radius: 8px;
   align-self: flex-start; 
