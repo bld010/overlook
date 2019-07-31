@@ -6,7 +6,6 @@ import './css/base.scss';
 import Hotel from './Hotel.js';
 import Customer from './Customer.js'
 import Bookings from './Bookings.js'
-import domUpdates from './domUpdates.js';
 import RoomServices from './RoomServices.js'
 import './images/loading-spinner.gif'
 
@@ -433,7 +432,7 @@ $makeBookingButton.click(function(e) {
 $newCustomerButton.click(function(e) {
   e.preventDefault();
   let newCustomerName = $('#new-customer-name-input').val();
-  domUpdates.createNewCustomer(hotel, {id: hotel.users.length + 1, name: `${newCustomerName}`})
+  hotel.createNewCustomer({id: hotel.users.length + 1, name: `${newCustomerName}`})
   $('#new-customer-name-input').val('');
   console.log(hotel.customerSelected)
   populateCustomerInfo(hotel.customerSelected, hotel.currentDate);

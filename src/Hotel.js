@@ -10,6 +10,12 @@ class Hotel {
     this.currentDate = date;
   }
 
+  createNewCustomer(newCustomerObject) {
+    let newCustomer = new Customer(newCustomerObject)
+    this.users.push(newCustomer);
+    this.customerSelected = newCustomer;
+  }
+
   returnTodaysTotalRevenue(date) {
     let todaysRoomServicesRevenue = this.returnTodaysRoomServicesRevenue(date)
     let todaysBookingRevenue = this.returnTodaysBookingRevenue(date)
