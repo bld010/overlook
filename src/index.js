@@ -4,7 +4,7 @@ import 'jquery-ui/ui/widgets/autocomplete';
 import datepicker from 'js-datepicker'
 import './css/base.scss';
 import Hotel from './Hotel.js';
-import Customer from './Customer.js'
+// import Customer from './Customer.js'
 import Bookings from './Bookings.js'
 import RoomServices from './RoomServices.js'
 import './images/loading-spinner.gif'
@@ -47,7 +47,6 @@ let $customersSection = $('.section__customers');
 let $customerBookingTodaySpan =  $('.section__rooms--customer-booking-today span');
 let $customerBookingsHistoryList = $('.section__rooms--customer-bookings-history ul');
 let sections = [$mainSection, $ordersSection, $roomsSection, $customersSection]
-let $datepicker = ('#datepicker');
 let $availableRoomsDiv = $('.section__rooms--new-booking--available-rooms');
 let $filterSuitesButton = $('.section__rooms--filter-suites');
 let $filterResidentialSuitesButton = $('.section__rooms--filter-residential-suites');
@@ -75,7 +74,6 @@ Promise.all([usersFetch, bookingsFetch, roomServicesFetch, roomsFetch])
     let bookings = results.find(data => data.hasOwnProperty('bookings')).bookings;
     let roomServices = results.find(data => data.hasOwnProperty('roomServices')).roomServices;
     hotel = new Hotel(users, bookings, roomServices, rooms, date);
-    console.log(hotel)
   });
 
 function formatDate() {
@@ -83,8 +81,12 @@ function formatDate() {
     month = '' + (date.getMonth() + 1),
     day = '' + date.getDate(),
     year = date.getFullYear();
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
+  if (month.length < 2) {
+    month = '0' + month
+  }
+  if (day.length < 2) {
+    day = '0' + day
+  }
   return [year, month, day].join('/');
 }
 
@@ -94,7 +96,7 @@ setTimeout(function () {
   $('.section__main--general--content').removeClass('hidden')
   $('.section__main--general--loading').addClass('hidden');
   populateItemsPageLoad();
-},3000)
+}, 3000)
 
 function populateMenu() {
   let menu = hotel.roomServices.map(service => {
@@ -136,7 +138,7 @@ function populateAvailableRooms(availableRooms) {
   let bookingsElements = availableRooms.reduce((acc, room) => {
     acc += `<div class="room" tabindex=0 data-roomNumber="${room.number}"><h5>Room ${room.number}</h5>`
     acc += `<p>Type: ${room.roomType}</p>`
-    acc +=`<p>Number of Beds: ${room.numBeds}</p>`
+    acc += `<p>Number of Beds: ${room.numBeds}</p>`
     acc += `<p>Bed Size: ${room.bedSize}</p>`
     acc += `<p>Bidet: ${room.bidet}</p>`
     acc += '<button class="book-room-button">Book</button></div>'
@@ -146,7 +148,6 @@ function populateAvailableRooms(availableRooms) {
 }
 
 function populateOrdersTableElements(charges, revenue, $tableElement) {
-  console.log(charges, revenue, $tableElement)
   let chargesTableElements = `<table>
     <thead>
       <tr>
@@ -167,7 +168,7 @@ function populateOrdersTableElements(charges, revenue, $tableElement) {
       </tr>
       <tr>`
       return acc
-    },'')
+    }, '')
     chargesTableElements += `
           <td colspan=2>Total:</td>
           <td>${revenue}</td>
@@ -180,6 +181,7 @@ function populateOrdersTableElements(charges, revenue, $tableElement) {
 
 // orders datepicker
 
+// eslint-disable-next-line no-unused-vars
 const picker = datepicker('#datepicker')
 
 // function fixDateFormat(dateString)
@@ -188,21 +190,21 @@ const picker = datepicker('#datepicker')
 
 function fixDateFormat(dateString) {
   var months = {
-    'Jan' : '01',
-    'Feb' : '02',
-    'Mar' : '03',
-    'Apr' : '04',
-    'May' : '05',
-    'Jun' : '06',
-    'Jul' : '07',
-    'Aug' : '08',
-    'Sep' : '09',
-    'Oct' : '10',
-    'Nov' : '11',
-    'Dec' : '12'
+    'Jan': '01',
+    'Feb': '02',
+    'Mar': '03',
+    'Apr': '04',
+    'May': '05',
+    'Jun': '06',
+    'Jul': '07',
+    'Aug': '08',
+    'Sep': '09',
+    'Oct': '10',
+    'Nov': '11',
+    'Dec': '12'
   }
 
-  let dateParts = dateString.split(' ').slice(1,4)
+  let dateParts = dateString.split(' ').slice(1, 4)
   dateParts[0] = months[dateParts[0]]
   let date = [dateParts[2], dateParts[0], dateParts[1]]
   return date.join('/');
@@ -310,7 +312,7 @@ function populateRoomsCustomerDay(user, bookings, date) {
 function generateBookingHistoryListElements(user, bookings) {
   let allCustomerBookings = user.returnAllBookings(bookings);
   if (allCustomerBookings.length) {
-    return allCustomerBookings.sort((a,b) => a.date.localeCompare(b.date)).reduce((acc, booking) => {
+    return allCustomerBookings.sort((a, b) => a.date.localeCompare(b.date)).reduce((acc, booking) => {
       acc += 
       `<li>Date: ${booking.date}, Room: ${booking.roomNumber}</li>`
       return acc;
@@ -321,14 +323,12 @@ function generateBookingHistoryListElements(user, bookings) {
 }
 
 function populateOrdersCustomerInfo(user, roomServices, date) {
-  let userDayCharges = user.returnChargesForDay(roomServices, date);
-  let table = populateOrdersTableElements(user.returnAllRoomServices(roomServices), user.returnAllTimeRoomServiceDollars(roomServices), $customerOrderTable);
+  populateOrdersTableElements(user.returnAllRoomServices(roomServices), user.returnAllTimeRoomServiceDollars(roomServices), $customerOrderTable);
   populateCustomerDayOrder(user, roomServices, date);
 
 }
 
 function populateCustomerDayOrder(user, roomServices, date) {
-  let dayCharges = user.returnChargesForDay(roomServices, date);
   let totalCharge = user.returnTotalForDay(roomServices, date);
   $customerDayOrder.text(`$${totalCharge}`);
 }
@@ -355,10 +355,10 @@ function removeSelectedClass() {
 
 function unhideSelectedSection(selectedSection) {
   selectedSection.addClass('selected').removeClass('hidden')
-  hideSections(selectedSection)
+  hideSections();
 }
 
-function hideSections (selectedSection) {
+function hideSections () {
   sections.forEach(section => {
     if (!section.hasClass('selected')) {
       section.addClass('hidden')
@@ -382,7 +382,7 @@ $navRoomsTab.click(function() {
 })
 
 $navRoomsTab.on('keydown', function(e) {
-  if (e.which==13 || e.which==32) {
+  if (e.which === 13 || e.which === 32) {
     $(this).click()
   }
 });
@@ -392,7 +392,7 @@ $navCustomersTab.click(function() {
 })
 
 $navCustomersTab.on('keydown', function(e) {
-  if (e.which==13 || e.which==32) {
+  if (e.which === 13 || e.which === 32) {
     $(this).click()
   }
 });
@@ -402,7 +402,7 @@ $navMainTab.click(function () {
 })
 
 $navMainTab.on('keydown', function(e) {
-  if (e.which==13 || e.which==32) {
+  if (e.which === 13 || e.which === 32) {
     $(this).click()
   }
 });
@@ -412,7 +412,7 @@ $navOrdersTab.click(function () {
 })
 
 $navOrdersTab.on('keydown', function(e) {
-  if (e.which==13 || e.which==32) {
+  if (e.which === 13 || e.which === 32) {
     $(this).click()
   }
 });
@@ -432,13 +432,12 @@ $newCustomerButton.click(function(e) {
   let newCustomerName = $('#new-customer-name-input').val();
   hotel.createNewCustomer({id: hotel.users.length + 1, name: `${newCustomerName}`})
   $('#new-customer-name-input').val('');
-  console.log(hotel.customerSelected)
   populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
   loadAutocompleteSearch()
   $('.header__search--error').addClass('hidden');
 })
 
-$submitRoomServiceOrderButton.on('click', function(e) {
+$submitRoomServiceOrderButton.on('click', function() {
   let items = [...$('.section__rooms--new-room-service-order div li.clicked')]
   items.forEach(item => {
     let food = item.dataset.food;
@@ -460,7 +459,6 @@ $availableRoomsDiv.on('click', function(e) {
     let bookingObject = {'userID': hotel.customerSelected.id, 'date': hotel.currentDate, 'roomNumber': roomNumber}
     let newBooking = new Bookings(bookingObject)
     hotel.bookings.unshift(newBooking)
-    console.log(hotel.bookings[0])
     $('.section__rooms--new-booking, .section__rooms--new-booking--available-rooms').addClass('hidden');
     populateCustomerInfo(hotel.customerSelected, hotel.currentDate);
   }
